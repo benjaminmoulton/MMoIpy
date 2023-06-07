@@ -1,0 +1,106 @@
+{
+    "components" : {
+        "rectangular" : {
+            "ID" : 1,
+            "density" : 0.25,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "semispan" : 8.0,
+            "sweep" : 0.0,
+            "chord" : [ [0.0, 1.0],
+                        [1.0, 1.0]],
+            "thickness" : [ [0.0, 0.12],
+                            [1.0, 0.12]]
+        },
+        "taper" : {
+            "ID" : 2,
+            "density" : 0.25,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "semispan" : 8.0,
+            "sweep" : 0.0,
+            "chord" : [ [0.0, 1.5],
+                        [1.0, 0.5]],
+            "thickness" : [ [0.0, 0.12],
+                            [1.0, 0.12]]
+        },
+        "thickness" : {
+            "ID" : 3,
+            "density" : 0.25,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "semispan" : 8.0,
+            "sweep" : 0.0,
+            "chord" : [ [0.0, 1.0],
+                        [1.0, 1.0]],
+            "thickness" : [ [0.0, 0.16],
+                            [1.0, 0.08]]
+        },
+        "camber" : {
+            "ID" : 4,
+            "density" : 0.25,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "semispan" : 8.0,
+            "sweep" : 0.0,
+            "chord" : [ [0.0, 1.0],
+                        [1.0, 1.0]],
+            "thickness" : [ [0.0, 0.12],
+                            [1.0, 0.12]],
+            "camber" : [[0.0, 0.04],
+                        [1.0, 0.04]]
+        },
+        "clark-y" : {
+            "ID" : 5,
+            "density" : 0.25,
+            "type" : "symmetric_airfoil",
+            "thickness_distribution_coefficients": [2.947, -1.102, -3.975, 3.533, -1.399],
+            "side" : "right",
+            "semispan" : 8.0,
+            "sweep" : 0.0,
+            "chord" : [ [0.0, 1.0],
+                        [1.0, 1.0]],
+            "thickness" : [ [0.0, 0.117],
+                            [1.0, 0.117]]
+        },
+        "diamond" : {
+            "ID" : 6,
+            "density" : 0.25,
+            "type" : "diamond_airfoil",
+            "side" : "right",
+            "semispan" : 8.0,
+            "sweep" : 0.0,
+            "chord" : [ [0.0, 1.0],
+                        [1.0, 1.0]],
+            "thickness" : [ [0.0, 0.12],
+                            [1.0, 0.12]],
+            "max_thickness_location" : 0.5
+        },
+        "sweep" : {
+            "ID" : 7,
+            "density" : 0.25,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "semispan" : 8.0,
+            "sweep" : 14.0,
+            "chord" : [ [0.0, 1.0],
+                        [1.0, 1.0]],
+            "thickness" : [ [0.0, 0.12],
+                            [1.0, 0.12]]
+        },
+        "all_properties" : {
+            "ID" : 8,
+            "density" : 0.25,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "semispan" : 8.0,
+            "sweep" : 14.0,
+            "chord" : [ [0.0, 1.5],
+                        [1.0, 0.5]],
+            "thickness" : [ [0.0, 0.16],
+                            [1.0, 0.08]],
+            "camber" : [[0.0, 0.04],
+                        [1.0, 0.04]]
+        }
+    }
+}

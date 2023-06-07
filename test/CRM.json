@@ -1,0 +1,401 @@
+{
+    "mass" : 220240.0,
+	"mass_in_slugs" : 15091.2336,
+	"density_symm [kg/m^3]" : 1557.224531931101,
+	"units" : "SI",
+	"airfoils" : {
+	    "uCRM-9_w0": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr0_xfoil.txt"
+			    }
+	    },
+	    "uCRM-9_w10": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr10_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w15": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr15_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w20": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr20_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w25": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr25_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w30": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr30_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w35": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr35_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w37": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr37_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w40": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr40_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w45": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr45_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w50": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr50_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w55": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr55_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w60": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr60_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w65": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr65_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w70": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr70_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w75": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr75_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w80": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr80_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w85": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr85_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w90": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr90_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w95": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr95_xfoil.txt"
+		    }
+	    },
+	    "uCRM-9_w100": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/uCRM-9_wr100_xfoil.txt"
+		    }
+	    },
+        "uCRM-9_h1692": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/h1692.txt"
+		    }
+	    },
+        "uCRM-9_h20": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/h20.txt"
+		    }
+	    },
+        "uCRM-9_h30": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/h30.txt"
+		    }
+	    },
+        "uCRM-9_h40": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/h40.txt"
+		    }
+	    },
+        "uCRM-9_h50": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/h50.txt"
+		    }
+	    },
+        "uCRM-9_h60": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/h60.txt"
+		    }
+	    },
+        "uCRM-9_h70": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/h70.txt"
+		    }
+	    },
+        "uCRM-9_h80": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/h80.txt"
+		    }
+	    },
+        "uCRM-9_h90": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/h90.txt"
+		    }
+	    },
+        "uCRM-9_h100": {
+		    "type": "linear",
+		    "geometry" : {
+			    "outline_points" : "/home/ben/Code/Research/SciTech_2023/CRM_inertia/AirfoilDatabase/airfoils/h100.txt"
+		    }
+	    }
+    },
+    "components" : {
+        "main_wing" : {
+            "ID" : 1,
+            "type" : "symmetric_airfoil",
+            "side" : "both",
+            "semispan" : 29.38,
+            "twist" : 	[	[0.00,	 6.7166	],
+							[0.10,	 4.4402	],
+							[0.15,	 3.6063	],
+							[0.20,	 3.0131	],
+							[0.25,	 2.2419	],
+							[0.30,	 1.5252	],
+							[0.35,	 0.9379	],
+							[0.37,	 0.7635	],
+							[0.40,	 0.4285	],
+							[0.45,	-0.2621	],
+							[0.50,	-0.6782	],
+							[0.55,	-0.9436	],
+							[0.60,	-1.2067	],
+							[0.65,	-1.4526	],
+							[0.70,	-1.6350	],
+							[0.75,	-1.8158	],
+							[0.80,	-2.0301	],
+							[0.85,	-2.2772	],
+							[0.90,	-2.5773	],
+							[0.95,	-3.1248	],
+							[1.00,	-3.7500	]],
+			"sweep" :	 [	[0.00,	29.7522	],
+							[0.10,	29.9501	],
+							[0.15,	31.1690	],
+							[0.20,	31.6678	],
+							[0.25,	31.5728	],
+							[0.30,	31.7263	],
+							[0.35,	31.0666	],
+							[0.37,	32.9494	],
+							[0.40,	35.6796	],
+							[0.45,	34.8209	],
+							[0.50,	35.0526	],
+							[0.55,	34.9914	],
+							[0.60,	35.0048	],
+							[0.65,	35.0039	],
+							[0.70,	35.0048	],
+							[0.75,	34.9974	],
+							[0.80,	34.9986	],
+							[0.85,	35.0031	],
+							[0.90,	35.0034	],
+							[0.95,	35.0020	],
+							[1.00,	34.9949	]],
+            "dihedral" : [	[0.00,	 0.0000	],
+							[0.10,	 3.6709	],
+							[0.15,	 2.4339	],
+							[0.20,	 2.0360	],
+							[0.25,	 2.2941	],
+							[0.30,	 2.3945	],
+							[0.35,	 2.4187	],
+							[0.37,	 2.5002	],
+							[0.40,	 3.0022	],
+							[0.45,	 3.6606	],
+							[0.50,	 4.1806	],
+							[0.55,	 4.8250	],
+							[0.60,	 5.3523	],
+							[0.65,	 6.0639	],
+							[0.70,	 6.8534	],
+							[0.75,	 7.6114	],
+							[0.80,	 8.4165	],
+							[0.85,	 9.1030	],
+							[0.90,	 9.7474	],
+							[0.95,	10.1231	],
+							[1.00,	 9.8390	]],
+            "chord" : 	[	[0.00,	13.6161	],
+							[0.10,	11.8976	],
+							[0.15,	11.0384	],
+							[0.20,	10.1790	],
+							[0.25,	 9.3197	],
+							[0.30,	 8.4604	],
+							[0.35,	 7.6010	],
+							[0.37,	 7.2573	],
+							[0.40,	 7.0416	],
+							[0.45,	 6.6821	],
+							[0.50,	 6.3226	],
+							[0.55,	 5.9631	],
+							[0.60,	 5.6035	],
+							[0.65,	 5.2440	],
+							[0.70,	 4.8845	],
+							[0.75,	 4.5250	],
+							[0.80,	 4.1654	],
+							[0.85,	 3.8059	],
+							[0.90,	 3.4464	],
+							[0.95,	 3.0869	],
+							[1.00,	 2.7274	]],
+			"thickness" : [	[0.00,	0.07623778 	],
+							[0.10,	0.06785168 	],
+							[0.15,	0.06352526 	],
+							[0.20,	0.05970346	],
+							[0.25,	0.05668993	],
+							[0.30,	0.05447487	],
+							[0.35,	0.05294698	],
+							[0.37,	0.05255014	],
+							[0.40,	0.05185386	],
+							[0.45,	0.05092439	],
+							[0.50,	0.04996027	],
+							[0.55,	0.04929708	],
+							[0.60,	0.04873207	],
+							[0.65,	0.04827097	],
+							[0.70,	0.04776757	],
+							[0.75,	0.04743444	],
+							[0.80,	0.04715226	],
+							[0.85,	0.04693842	],
+							[0.90,	0.04680276	],
+							[0.95,	0.04675882	],
+							[1.00,	0.0458818	]],
+	    	"camber" : [	[0.00,	0.00144906	],
+							[0.10,	0.00098246	],
+							[0.15,	0.00202895	],
+							[0.20,	0.00298515	],
+							[0.25,	0.00419872	],
+							[0.30,	0.00648599	],
+							[0.35,	0.00882208	],
+							[0.37,	0.00982874	],
+							[0.40,	0.01113652	],
+							[0.45,	0.01259541	],
+							[0.50,	0.01393243	],
+							[0.55,	0.0149735	],
+							[0.60,	0.01557231	],
+							[0.65,	0.0157665	],
+							[0.70,	0.01602028	],
+							[0.75,	0.01631344	],
+							[0.80,	0.01623655	],
+							[0.85,	0.01573418	],
+							[0.90,	0.01502779	],
+							[0.95,	0.01245217	],
+							[1.00,	0.00071848	]],
+			"airfoil" : [	[0.00,	"uCRM-9_w0"		],
+							[0.10,	"uCRM-9_w10"	],
+							[0.15,	"uCRM-9_w15"	],
+							[0.20,	"uCRM-9_w20"	],
+							[0.25,	"uCRM-9_w25"	],
+							[0.30,	"uCRM-9_w30"	],
+							[0.35,	"uCRM-9_w35"	],
+							[0.37,	"uCRM-9_w37"	],
+							[0.40,	"uCRM-9_w40"	],
+							[0.45,	"uCRM-9_w45"	],
+							[0.50,	"uCRM-9_w50"	],
+							[0.55,	"uCRM-9_w55"	],
+							[0.60,	"uCRM-9_w60"	],
+							[0.65,	"uCRM-9_w65"	],
+							[0.70,	"uCRM-9_w70"	],
+							[0.75,	"uCRM-9_w75"	],
+							[0.80,	"uCRM-9_w80"	],
+							[0.85,	"uCRM-9_w85"	],
+							[0.90,	"uCRM-9_w90"	],
+							[0.95,	"uCRM-9_w95"	],
+							[1.00,	"uCRM-9_w100"	]]
+        },
+        "horizontal_tail" : {
+            "ID" : 2,
+            "type" : "symmetric_airfoil",
+            "side" : "both",
+            "connect_to" : {
+                "dx" : -30.15011535,
+                "dz" : -2.29744401
+            },
+            "semispan" : 10.668,
+            "sweep" : 37.0,
+            "dihedral" : 7.51132,
+            "chord" : 	[	[0.00,	5.744095000	],
+							[0.20,	5.614777815	],
+							[0.30,	5.194853718	],
+							[0.40,	4.774968337	],
+							[0.50,	4.355132870	],
+							[0.60,	3.935363292	],
+							[0.70,	3.515683202	],
+							[0.80,	3.096128992	],
+							[0.90,	2.676759856	],
+							[1.00,	2.256543698	]],
+			"thickness" : [	[0.00,	0.04926645	],
+							[0.20,	0.049113	],
+							[0.30,	0.04856291	],
+							[0.40,	0.04791899	],
+							[0.50,	0.04715766	],
+							[0.60,	0.04624442	],
+							[0.70,	0.04513233	],
+							[0.80,	0.04375819	],
+							[0.90,	0.04205303	],
+							[1.00,	0.03992477	]],
+            "camber" : [	[0.00,	1.35858675e-04	],
+							[0.20,	1.27025722e-04	],
+							[0.30,	1.16543640e-04	],
+							[0.40,	6.69554191e-05	],
+							[0.50,	1.89378488e-05	],
+							[0.60,	1.78314349e-06	],
+							[0.70,	0.00000000e+00	],
+							[0.80,	2.36965431e-07	],
+							[0.90,	0.00000000e+00	],
+							[1.00,	1.90844080e-05	]],
+			"airfoil" : [	[0.00,	"uCRM-9_h1692"	],
+							[0.20,	"uCRM-9_h20"	],
+							[0.30,	"uCRM-9_h30"	],
+							[0.40,	"uCRM-9_h40"	],
+							[0.50,	"uCRM-9_h50"	],
+							[0.60,	"uCRM-9_h60"	],
+							[0.70,	"uCRM-9_h70"	],
+							[0.80,	"uCRM-9_h80"	],
+							[0.90,	"uCRM-9_h90"	],
+							[1.00,	"uCRM-9_h100"	]]
+        }
+    }
+}

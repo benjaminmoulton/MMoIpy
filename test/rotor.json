@@ -1,0 +1,27 @@
+{
+    "components" : {
+        "propeller" : {
+            "ID" : 3,
+            "type" : "rotor",
+            "mass" :  1.91211384,
+            "number_blades" : 5,
+            "diameter_hub" : 1.0,
+            "diameter_rotor" : 10.5,
+            "rotation_rate" : 272.271363311,
+            "chord" : [
+                [0.0, 0.87333],
+                [1.0, 0.29111]
+            ],
+            "thickness" : [	[0.0,	0.16],
+                            [1.0,	0.06]]
+        },
+        "prop_hub" : {
+            "ID" : 4,
+            "type" : "cylinder",
+            "density" : 2.54863928,
+            "radius" : 0.5,
+            "hollow_radius" : 0.0,
+            "length" : 0.85773558333
+        }
+    }
+}

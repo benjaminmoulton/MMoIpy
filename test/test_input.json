@@ -1,0 +1,89 @@
+{
+    "components" : {
+        "sphere" : {
+            "ID" : 1,
+            "mass" : 5.0,
+            "type" : "sphere",
+            "connect_to" : {
+                "dx" :  8.0,
+                "dy" :  3.0
+            },
+            "radius" : 0.5,
+            "hollow_radius" : 0.0
+        },
+        "cylinder" : {
+            "ID" : 2,
+            "mass" : 20.0,
+            "type" : "cylinder",
+            "connect_to" : {
+                "dx" :  3.5,
+                "dz" :  -2.0
+            },
+            "radius" : 0.5,
+            "hollow_radius" : 0.0,
+            "length" : 9.0
+        },
+        "wing" : {
+            "ID" : 3,
+            "mass" : 30.0,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "connect_to" : {
+                "dy" :  -5.0
+            },
+            "semispan" : 5.0,
+            "sweep" : 10.0,
+            "chord" : [ [0.0, 1.0],
+                        [1.0, 0.8]],
+            "thickness" : [ [0.0, 0.12],
+                            [1.0, 0.10]]
+        },
+        "propeller" : {
+            "ID" : 4,
+            "type" : "rotor",
+            "density" :  1.90407447947,
+            "connect_to" : {
+                "dx" :  -1.5
+            },
+            "orientation" : [0.0, 20.0, 0.0],
+            "number_blades" : 1000,
+            "diameter_hub" : 0.5,
+            "diameter_rotor" : 3.0,
+            "rotation_rate" : 20.0,
+            "chord" : [
+                [0.0, 0.5],
+                [1.0, 0.2]
+            ],
+            "thickness" : [	[0.0,	0.18],
+                            [1.0,	0.12]]
+        },
+        "prop_hub" : {
+            "ID" : 5,
+            "type" : "cylinder",  
+            "connect_to" : {
+                "ID" : 3,
+                "location" : "tip",
+                "dx" :  -1.5,
+                "dy" :  0.0,
+                "dz" :  0.0
+            },
+            "orientation" : [0.0, 0.0, 0.0],
+            "density" : 1.90407447947,
+            "radius" : 0.25,
+            "length" : 0.5
+        },
+        "cuboid" : {
+            "ID" : 6,
+            "mass" : 10.0,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  1.0,
+                "dy" :  2.0,
+                "dz" :  3.0
+            },
+            "x_length" : 5.0,
+            "y_length" : 10.0,
+            "z_length" : 15.0
+        }
+    }
+}
