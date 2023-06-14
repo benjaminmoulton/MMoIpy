@@ -21,6 +21,17 @@ class AircraftSystem:
     """
     def __init__(self,input_vars={},verbose=True):
 
+        # print cool logo
+        print("""                                                               
+        _|      _|  _|      _|            _|_|_|                      
+        _|_|  _|_|  _|_|  _|_|    _|_|      _|    _|_|_|    _|    _|  
+        _|  _|  _|  _|  _|  _|  _|    _|    _|    _|    _|  _|    _|  
+        _|      _|  _|      _|  _|    _|    _|    _|    _|  _|    _|  
+        _|      _|  _|      _|    _|_|    _|_|_|  _|_|_|      _|_|_|  
+                                                _|              _|  
+                                                _|          _|_|    
+        """)
+
         # get info or raise error
         self._get_input_vars(input_vars)
 
