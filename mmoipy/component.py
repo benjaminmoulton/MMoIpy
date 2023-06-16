@@ -907,6 +907,7 @@ class Rotor(Component):
         a3 = self._a3
         a4 = self._a4
         u0 = 1./ 60.*( 40.*a0+ 30.*a1+ 20.*a2+ 15.*a3+ 12.*a4)
+        self.u0_for_viz = u0
         self.volume = 1. / 12. * Nb * ka * u0 * (rt-rr)
 
 

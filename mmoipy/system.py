@@ -1,6 +1,7 @@
 import numpy as np
 import json
 import matplotlib.pyplot as plt
+import mpl_toolkits.mplot3d.axes3d as ax3
 
 from wing import Wing
 from component import Component, Cuboid, Cylinder, Sphere, Rotor
@@ -116,6 +117,7 @@ class AircraftSystem:
         # initialize components, save zero component
         self.components = {}
         self.components[0] = Component({"mass":0.0})
+        self.components[0].type = "origin"
 
 
         for i in range(len(name_order)):
@@ -161,6 +163,7 @@ class AircraftSystem:
             # save "name"
             if input_dict["type"] in wing_types + comp_types:
                 self.components[id_number].name = component
+            self.components[id_number].type = input_dict["type"]
         
         # calculate total volume
         self.volume = 0.0
@@ -446,3 +449,317 @@ class AircraftSystem:
                         self.report_as_SolidWorks_report(info,positive_tensor,name)
         
         return self.properties_dict
+
+
+    def _build_sphere(self,component):
+        # create base arrays
+        num = 100
+        r = component.r2*np.ones((num,))
+        t = np.linspace(0.,2.*np.pi,num=num)
+
+        # create planar circles circle
+        xy = np.block([ [r*np.cos(t)], [r*np.sin(t)], [0.*r] ])
+        xz = np.block([ [r*np.cos(t)], [0.*r], [r*np.sin(t)] ])
+        yz = np.block([ [0.*r], [r*np.cos(t)], [r*np.sin(t)] ])
+
+        # create hollow lines
+        hxy = xy*component.r1/component.r2
+        hxz = xz*component.r1/component.r2
+        hyz = yz*component.r1/component.r2
+
+        return [xy,xz,yz],[hxy,hxz,hyz]
+
+
+    def _build_cylinder(self,component):
+        # create base arrays
+        num = 100
+        r = component.r2*np.ones((num,))
+        t = np.linspace(0.,2.*np.pi,num=num)
+
+        # create planar circles circle
+        fnt = np.block([ [0.*r+component.l/2.], [r*np.cos(t)], [r*np.sin(t)] ])
+        aft = np.block([ [0.*r-component.l/2.], [r*np.cos(t)], [r*np.sin(t)] ])
+        top = np.block([ 
+            [component.l/2.,-component.l/2.],
+            [0.,0.],
+            [-component.r2,-component.r2]
+        ])
+        bot = np.block([ 
+            [component.l/2.,-component.l/2.],
+            [0.,0.],
+            [ component.r2, component.r2]
+        ])
+
+        # create hollow lines
+        if component.r1 != 0.0:
+            hfnt = fnt*1.
+            haft = aft*1.
+            htop = top*1.
+            hbot = bot*1.
+            hfnt[1:3] = hfnt[1:3]*component.r1/component.r2
+            haft[1:3] = haft[1:3]*component.r1/component.r2
+            htop[1:3] = htop[1:3]*component.r1/component.r2
+            hbot[1:3] = hbot[1:3]*component.r1/component.r2
+        else:
+            hfnt = np.zeros((3,2))
+            haft = np.zeros((3,2))
+            htop = np.zeros((3,2))
+            hbot = np.zeros((3,2))
+
+        return [fnt,aft,top,bot],[hfnt,haft,htop,hbot]
+
+
+    def _build_cuboid(self,component):
+        # pull out components
+        lx2 = component.lx2/2.
+        ly2 = component.ly2/2.
+        lz2 = component.lz2/2.
+        lx1 = component.lx1/2.
+        ly1 = component.ly1/2.
+        lz1 = component.lz1/2.
+
+        # create cuboid
+        cub = [
+            # x lines
+            np.array([ [ lx2,-lx2],[ ly2, ly2],[-lz2,-lz2] ]),
+            np.array([ [ lx2,-lx2],[-ly2,-ly2],[-lz2,-lz2] ]),
+            np.array([ [ lx2,-lx2],[ ly2, ly2],[ lz2, lz2] ]),
+            np.array([ [ lx2,-lx2],[-ly2,-ly2],[ lz2, lz2] ]),
+            # front face
+            np.array([ [ lx2, lx2],[-ly2, ly2],[-lz2,-lz2] ]),
+            np.array([ [ lx2, lx2],[ ly2, ly2],[-lz2, lz2] ]),
+            np.array([ [ lx2, lx2],[ ly2,-ly2],[ lz2, lz2] ]),
+            np.array([ [ lx2, lx2],[-ly2,-ly2],[ lz2,-lz2] ]),
+            # aft face
+            np.array([ [-lx2,-lx2],[-ly2, ly2],[-lz2,-lz2] ]),
+            np.array([ [-lx2,-lx2],[ ly2, ly2],[-lz2, lz2] ]),
+            np.array([ [-lx2,-lx2],[ ly2,-ly2],[ lz2, lz2] ]),
+            np.array([ [-lx2,-lx2],[-ly2,-ly2],[ lz2,-lz2] ])
+        ]
+
+        # hollow
+        hcub = [
+            # x lines
+            np.array([ [ lx1,-lx1],[ ly1, ly1],[-lz1,-lz1] ]),
+            np.array([ [ lx1,-lx1],[-ly1,-ly1],[-lz1,-lz1] ]),
+            np.array([ [ lx1,-lx1],[ ly1, ly1],[ lz1, lz1] ]),
+            np.array([ [ lx1,-lx1],[-ly1,-ly1],[ lz1, lz1] ]),
+            # front face
+            np.array([ [ lx1, lx1],[-ly1, ly1],[-lz1,-lz1] ]),
+            np.array([ [ lx1, lx1],[ ly1, ly1],[-lz1, lz1] ]),
+            np.array([ [ lx1, lx1],[ ly1,-ly1],[ lz1, lz1] ]),
+            np.array([ [ lx1, lx1],[-ly1,-ly1],[ lz1,-lz1] ]),
+            # aft face
+            np.array([ [-lx1,-lx1],[-ly1, ly1],[-lz1,-lz1] ]),
+            np.array([ [-lx1,-lx1],[ ly1, ly1],[-lz1, lz1] ]),
+            np.array([ [-lx1,-lx1],[ ly1,-ly1],[ lz1, lz1] ]),
+            np.array([ [-lx1,-lx1],[-ly1,-ly1],[ lz1,-lz1] ])
+        ]
+
+        return cub,hcub
+
+
+    def _build_rotor(self,component):
+        # pull in components
+        Nb = component._Nb
+        cr,ct = component._cr,component._ct
+        tr,tt = component._tr,component._tt
+        rr,rt = component._rr,component._rt
+        u0 = component.u0_for_viz
+
+        # create base arrays
+        num = 100
+        t = np.linspace(0.,2.*np.pi,num=num)
+
+        # create height function
+        r = np.linspace(rr,rt,num)
+        c = (ct - cr)*(r - rr)/(rt - rr) + cr
+        m = (tt - tr)*(r - rr)/(rt - rr) + tr
+        h = Nb*m*c**2.*u0/2./np.pi/r
+
+        # create planar circles circle
+        frt = np.block([ [0.*t+h[ 0]/2.], [rr*np.cos(t)], [rr*np.sin(t)] ])
+        art = np.block([ [0.*t-h[ 0]/2.], [rr*np.cos(t)], [rr*np.sin(t)] ])
+        ftp = np.block([ [0.*t+h[-1]/2.], [rt*np.cos(t)], [rt*np.sin(t)] ])
+        atp = np.block([ [0.*t-h[-1]/2.], [rt*np.cos(t)], [rt*np.sin(t)] ])
+        # lines
+        fht = np.block([ [0.*t+h/2.], [0.*h], [-r] ])
+        aht = np.block([ [0.*t-h/2.], [0.*h], [-r] ])
+        fhb = np.block([ [0.*t+h/2.], [0.*h], [ r] ])
+        ahb = np.block([ [0.*t-h/2.], [0.*h], [ r] ])
+
+
+        return [frt,art,ftp,atp,fht,aht,fhb,ahb],None
+
+
+    def _build_symmetric_airfoil(self,component):
+        # pull in components
+        cr,ct = component._cr,component._ct
+        tr,tt = component._tr,component._tt
+        a0 = component._a0
+        a1 = component._a1
+        a2 = component._a2
+        a3 = component._a3
+        a4 = component._a4
+        b = component._b*component._delta
+
+        # create base arrays
+        num = 100
+        xa = np.linspace(0.,1.,num=num)
+        ta = a0*xa**0.5 + a1*xa + a2*xa**2. + a3*xa**3. + a4*xa**4.
+
+        # root airfoil
+        sw = component._b*np.sin(component._Lambda)
+        rtu = np.block([ [(0.25-xa)*cr   ], [0.*xa  ], [-ta*tr*cr/2.] ])
+        rtl = np.block([ [(0.25-xa)*cr   ], [0.*xa  ], [ ta*tr*cr/2.] ])
+        ttu = np.block([ [(0.25-xa)*ct-sw], [0.*xa+b], [-ta*tt*ct/2.] ])
+        ttl = np.block([ [(0.25-xa)*ct-sw], [0.*xa+b], [ ta*tt*ct/2.] ])
+        lel = np.block([ [ 0.25*cr, 0.25*ct-sw], [0.,b], [0.0,0.0] ])
+        tel = np.block([ [-0.75*cr,-0.75*ct-sw], [0.,b], [0.0,0.0] ])
+
+
+        return [rtu,rtl,ttu,ttl,lel,tel],None
+
+
+    def visualize(self,show_legend=False,filename=None):
+        # initialize plot
+        fig = plt.figure()
+        ax = fig.add_subplot(111,projection='3d')
+
+        # calculate component lines, plot
+        ci = 0
+        colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+        collen = len(colors)
+        x_lims = [1.0e+100, 1.0e-100]
+        y_lims = [1.0e+100, 1.0e-100]
+        z_lims = [1.0e+100, 1.0e-100]
+        plottable_shapes = [
+            # "sphere","cylinder","cuboid","rotor",
+            "symmetric_airfoil"
+        ]
+        for i in self.components:
+            # build object by type
+            component = self.components[i]
+            if component.type in plottable_shapes:
+                if component.type == "symmetric_airfoil":
+                    nums = len(component._components)
+                else:
+                    nums = 1
+                    R_matrix = component.R
+                    cg = component.get_cg_location()
+                for j in range(nums):
+                    if component.type == "sphere":
+                        lines,hlines = self._build_sphere(component)
+                    elif component.type == "cylinder":
+                        lines,hlines = self._build_cylinder(component)
+                    elif component.type == "cuboid":
+                        lines,hlines = self._build_cuboid(component)
+                    elif component.type == "rotor":
+                        lines,hlines = self._build_rotor(component)
+                    elif component.type == "symmetric_airfoil":
+                        lines,hlines = self._build_symmetric_airfoil(
+                            component._components[j])
+                        R_matrix = component._components[j].R
+                    else:
+                        lines = [[[],[],[]]]
+                    
+                    # plot lines
+                    c = colors[ci % collen]
+                    for linenum,line in enumerate(lines):
+                        # rotate
+                        line = np.matmul(R_matrix,line)
+
+                        # shift by cg location
+                        if component.type[-7:] == "airfoil":
+                            cg = component._components[j].locations["root"]
+                        line[0] += cg[0]
+                        line[1] += cg[1]
+                        line[2] += cg[2]
+
+                        # plot
+                        if linenum == 0:
+                            lbl = component.name
+                        else:
+                            lbl = ""
+                        ax.plot(line[0],line[1],line[2],c=c,label=lbl)
+
+                        # pull out max and min vals
+                        x_lims[0] = min(np.min(line[0]),x_lims[0])
+                        y_lims[0] = min(np.min(line[1]),y_lims[0])
+                        z_lims[0] = min(np.min(line[2]),z_lims[0])
+                        x_lims[1] = max(np.max(line[0]),x_lims[1])
+                        y_lims[1] = max(np.max(line[1]),y_lims[1])
+                        z_lims[1] = max(np.max(line[2]),z_lims[1])
+                    
+                    # plot hollow lines
+                    if hlines is not None:
+                        for line in lines:
+                            # rotate
+                            line = np.matmul(R_matrix,line)
+
+                            # shift by cg location
+                            cg = component.get_cg_location()
+                            # cg = component.locations["root"]
+                            line[0] += cg[0]
+                            line[1] += cg[1]
+                            line[2] += cg[2]
+
+                            # plot
+                            ax.plot(line[0],line[1],line[2],c=c,ls="--")
+
+                            # pull out max and min vals
+                            x_lims[0] = min(np.min(line[0]),x_lims[0])
+                            y_lims[0] = min(np.min(line[1]),y_lims[0])
+                            z_lims[0] = min(np.min(line[2]),z_lims[0])
+                            x_lims[1] = max(np.max(line[0]),x_lims[1])
+                            y_lims[1] = max(np.max(line[1]),y_lims[1])
+                            z_lims[1] = max(np.max(line[2]),z_lims[1])
+
+                # update colors index
+                ci += 1
+
+
+        # set axes lengths
+
+        # Find out which axis has the widest limits
+        x_diff = x_lims[1]-x_lims[0]
+        y_diff = y_lims[1]-y_lims[0]
+        z_diff = z_lims[1]-z_lims[0]
+        max_diff = max([x_diff, y_diff, z_diff])
+
+        # Determine the center of each set of axis limits
+        x_cent = x_lims[0]+0.5*x_diff
+        y_cent = y_lims[0]+0.5*y_diff
+        z_cent = z_lims[0]+0.5*z_diff
+
+        # Scale the axis limits so they all have the same width as the widest set
+        x_lims[0] = x_cent-0.5*max_diff
+        x_lims[1] = x_cent+0.5*max_diff
+
+        y_lims[0] = y_cent-0.5*max_diff
+        y_lims[1] = y_cent+0.5*max_diff
+
+        z_lims[0] = z_cent-0.5*max_diff
+        z_lims[1] = z_cent+0.5*max_diff
+
+        # Set limits so it is a right-handed coordinate system with z pointing down
+        ax.set_xlim3d(x_lims[1], x_lims[0])
+        ax.set_ylim3d(y_lims[0], y_lims[1])
+        ax.set_zlim3d(z_lims[1], z_lims[0])
+
+        # other plot parameters
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_zlabel("z")
+        plt.tight_layout()
+        # ax.invert_xaxis()
+        ax.view_init(30.,-140)
+        if show_legend:
+            ax.legend()
+
+        # show plot
+        if filename is not None:
+            plt.savefig(filename)
+            plt.close()
+        else:
+            plt.show()
