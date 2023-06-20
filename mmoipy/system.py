@@ -609,7 +609,7 @@ class AircraftSystem:
         ta = a0*xa**0.5 + a1*xa + a2*xa**2. + a3*xa**3. + a4*xa**4.
 
         # root airfoil
-        sw = component._b*np.sin(component._Lambda)
+        sw = component._b*np.tan(component._Lambda)
         rtu = np.block([ [(0.25-xa)*cr   ], [0.*xa  ], [-ta*tr*cr/2.] ])
         rtl = np.block([ [(0.25-xa)*cr   ], [0.*xa  ], [ ta*tr*cr/2.] ])
         ttu = np.block([ [(0.25-xa)*ct-sw], [0.*xa+b], [-ta*tt*ct/2.] ])
@@ -619,6 +619,37 @@ class AircraftSystem:
 
 
         return [rtu,rtl,ttu,ttl,lel,tel],None
+
+
+    def _build_diamond_airfoil(self,component):
+        # pull in components
+        cr,ct = component._cr,component._ct
+        tr,tt = component._tr,component._tt
+        xmt = component._xmt
+        b = component._b*component._delta
+
+        # create base arrays
+        num = 101
+        xa = np.linspace(0.,1.,num=num)
+        ta = xa*0.
+        ta[xa<=xmt] = xa[xa<=xmt]/xmt
+        ta[xa>xmt] = (1. - xa[xa>xmt])/(1. - xmt)
+
+        # root airfoil
+        sw = component._b*np.tan(component._Lambda)
+        rtu = np.block([ [(0.25-xa)*cr   ], [0.*xa  ], [-ta*tr*cr/2.] ])
+        rtl = np.block([ [(0.25-xa)*cr   ], [0.*xa  ], [ ta*tr*cr/2.] ])
+        ttu = np.block([ [(0.25-xa)*ct-sw], [0.*xa+b], [-ta*tt*ct/2.] ])
+        ttl = np.block([ [(0.25-xa)*ct-sw], [0.*xa+b], [ ta*tt*ct/2.] ])
+        lel = np.block([ [ 0.25*cr, 0.25*ct-sw], [0.,b], [0.0,0.0] ])
+        tel = np.block([ [-0.75*cr,-0.75*ct-sw], [0.,b], [0.0,0.0] ])
+        upl = np.block([ [(0.25-xmt)*cr,(0.25-xmt)*ct-sw], [0.,b], 
+            [-tr*cr/2.,-tt*ct/2.] ])
+        lol = np.block([ [(0.25-xmt)*cr,(0.25-xmt)*ct-sw], [0.,b], 
+            [ tr*cr/2., tt*ct/2.] ])
+
+
+        return [rtu,rtl,ttu,ttl,lel,tel,upl,lol],None
 
 
     def visualize(self,show_legend=False,filename=None):
@@ -634,14 +665,14 @@ class AircraftSystem:
         y_lims = [1.0e+100, 1.0e-100]
         z_lims = [1.0e+100, 1.0e-100]
         plottable_shapes = [
-            # "sphere","cylinder","cuboid","rotor",
-            "symmetric_airfoil"
+            "sphere","cylinder","cuboid","rotor",
+            "symmetric_airfoil","diamond_airfoil"
         ]
         for i in self.components:
             # build object by type
             component = self.components[i]
             if component.type in plottable_shapes:
-                if component.type == "symmetric_airfoil":
+                if component.type in ["symmetric_airfoil","diamond_airfoil"]:
                     nums = len(component._components)
                 else:
                     nums = 1
@@ -658,6 +689,10 @@ class AircraftSystem:
                         lines,hlines = self._build_rotor(component)
                     elif component.type == "symmetric_airfoil":
                         lines,hlines = self._build_symmetric_airfoil(
+                            component._components[j])
+                        R_matrix = component._components[j].R
+                    elif component.type == "diamond_airfoil":
+                        lines,hlines = self._build_diamond_airfoil(
                             component._components[j])
                         R_matrix = component._components[j].R
                     else:
@@ -693,7 +728,7 @@ class AircraftSystem:
                     
                     # plot hollow lines
                     if hlines is not None:
-                        for line in lines:
+                        for line in hlines:
                             # rotate
                             line = np.matmul(R_matrix,line)
 
@@ -751,6 +786,10 @@ class AircraftSystem:
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_zlabel("z")
+        white = ( 0.0,0.0,0.0,0.0)
+        ax.w_xaxis.set_pane_color(white)
+        ax.w_yaxis.set_pane_color(white)
+        ax.w_zaxis.set_pane_color(white)
         plt.tight_layout()
         # ax.invert_xaxis()
         ax.view_init(30.,-140)

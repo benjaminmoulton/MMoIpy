@@ -81,6 +81,7 @@ class Wing:
         # thickness coefficients
         self._avals = input_dict.get("thickness_distribution_coefficients",\
             "open_trailing_edge")
+        self._xmt = input_dict.get("max_thickness_location",0.5)
 
         # check for incorrect format of values
         if isinstance(self._dihedral,(float,int)):
@@ -188,7 +189,6 @@ class Wing:
 
         # create dictionary for input to component
         for i in range(span_fracs.shape[0]-1):
-
             # determine span value
             b = (span_fracs[i+1] - span_fracs[i]) * self._b
 
@@ -246,6 +246,8 @@ class Wing:
             self._component_inputs[i]["root_location"] = root_location.tolist()
             self._component_inputs[i]["thickness_distribution_coefficients"] =\
                 self._avals
+            self._component_inputs[i]["geometry"]["max_thickness_location"] =\
+                self._xmt
             if self._side == "both":
                 self._component_inputs[i]["side"] = "right"
             else:

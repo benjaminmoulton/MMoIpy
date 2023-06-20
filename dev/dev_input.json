@@ -95,6 +95,24 @@
             "x_hollow_length" : 4.0,
             "y_hollow_length" : 0.05,
             "z_hollow_length" : 2.5
+        },
+        "diamond_wing" : {
+            "ID" : 7,
+            "mass" : 30.0,
+            "type" : "diamond_airfoil",
+            "side" : "left",
+            "connect_to" : {
+                "dx" : 6.0,
+                "dy" : -4.0
+            },
+            "semispan" : 10.0,
+            "sweep" : 5.0,
+            "dihedral" : 25.0,
+            "max_thickness_location" : 0.25,
+            "chord" : [ [0.0, 1.0],
+                        [1.0, 0.2]],
+            "thickness" : [ [0.0, 0.08],
+                            [1.0, 0.16]]
         }
     }
 }

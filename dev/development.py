@@ -16,5 +16,10 @@ if __name__ == "__main__":
     ex_1.visualize()
 
     # # horizon
-    # hzn = mmoi("horizon.json")
+    # hzn = mmoi(exampl_directory + "horizon.json")
+    # # hzn.get_mass_properties(report=True)
     # hzn.visualize()
+
+    # # CRM
+    # CRM = mmoi(exampl_directory + "CRM.json")
+    # CRM.visualize()
