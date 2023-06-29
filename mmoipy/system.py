@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.axes3d as ax3
 
 from wing import Wing
-from component import Component, Cuboid, Cylinder, Sphere, Rotor
+from component import Component, Cuboid, Cylinder, HalfCylinder, Sphere, Rotor
 
 class AircraftSystem:
     """A class calculating and containing the mass properties of an aircraft.
@@ -92,7 +92,7 @@ class AircraftSystem:
 
         wing_types = ["prismoid","pseudo_prismoid","symmetric_airfoil",
         "diamond_airfoil"]
-        comp_types = ["cuboid","cylinder","sphere","rotor"]
+        comp_types = ["cuboid","cylinder","half_cylinder","sphere","rotor"]
 
         # initialize get each id number
         ids = []; attach_ids = []; name = []
@@ -155,6 +155,8 @@ class AircraftSystem:
                 self.components[id_number] = Cuboid(input_dict)
             elif input_dict["type"] == "cylinder":
                 self.components[id_number] = Cylinder(input_dict)
+            elif input_dict["type"] == "half_cylinder":
+                self.components[id_number] = HalfCylinder(input_dict)
             elif input_dict["type"] == "sphere":
                 self.components[id_number] = Sphere(input_dict)
             elif input_dict["type"] == "rotor":
@@ -473,40 +475,144 @@ class AircraftSystem:
     def _build_cylinder(self,component):
         # create base arrays
         num = 100
-        r = component.r2*np.ones((num,))
+        r = np.ones((num,))
         t = np.linspace(0.,2.*np.pi,num=num)
+        h = component._h
+        bbo, bbi = component._bbo, component._bbi
+        bto, bti = component._bto, component._bti
+        cbo, cbi = component._cbo, component._cbi
+        cto, cti = component._cto, component._cti
 
         # create planar circles circle
-        fnt = np.block([ [0.*r+component.l/2.], [r*np.cos(t)], [r*np.sin(t)] ])
-        aft = np.block([ [0.*r-component.l/2.], [r*np.cos(t)], [r*np.sin(t)] ])
+        fnt = np.block([ [0.*r  ], [bbo*r*np.cos(t)], [cbo*r*np.sin(t)] ])
+        aft = np.block([ [0.*r+h], [bto*r*np.cos(t)], [cto*r*np.sin(t)] ])
         top = np.block([ 
-            [component.l/2.,-component.l/2.],
+            [0.,h],
             [0.,0.],
-            [-component.r2,-component.r2]
+            [-cbo,-cto]
         ])
         bot = np.block([ 
-            [component.l/2.,-component.l/2.],
+            [0.,h],
             [0.,0.],
-            [ component.r2, component.r2]
+            [ cbo, cto]
+        ])
+        lef = np.block([ 
+            [0.,h],
+            [-bbo,-bto],
+            [0.,0.]
+        ])
+        rig = np.block([ 
+            [0.,h],
+            [ bbo, bto],
+            [0.,0.]
         ])
 
         # create hollow lines
-        if component.r1 != 0.0:
-            hfnt = fnt*1.
-            haft = aft*1.
-            htop = top*1.
-            hbot = bot*1.
-            hfnt[1:3] = hfnt[1:3]*component.r1/component.r2
-            haft[1:3] = haft[1:3]*component.r1/component.r2
-            htop[1:3] = htop[1:3]*component.r1/component.r2
-            hbot[1:3] = hbot[1:3]*component.r1/component.r2
-        else:
+        if bbi == bti == cbi == cti == 0.0:
             hfnt = np.zeros((3,2))
             haft = np.zeros((3,2))
             htop = np.zeros((3,2))
             hbot = np.zeros((3,2))
+            hlef = np.zeros((3,2))
+            hrig = np.zeros((3,2))
+        else:
+            hfnt = fnt*1.
+            haft = aft*1.
+            htop = top*1.
+            hbot = bot*1.
+            hlef = lef*1.
+            hrig = rig*1.
+            hfnt[1] = hfnt[1]*bbi/bbo
+            hfnt[2] = hfnt[2]*cbi/cbo
+            haft[1] = haft[1]*bbi/bbo
+            haft[2] = haft[2]*cbi/cbo
+            htop[1] = htop[1]*bbi/bbo
+            htop[2] = htop[2]*cbi/cbo
+            hbot[1] = hbot[1]*bbi/bbo
+            hbot[2] = hbot[2]*cbi/cbo
+            hlef[1] = hlef[1]*bbi/bbo
+            hlef[2] = hlef[2]*cbi/cbo
+            hrig[1] = hrig[1]*bbi/bbo
+            hrig[2] = hrig[2]*cbi/cbo
 
-        return [fnt,aft,top,bot],[hfnt,haft,htop,hbot]
+        return [fnt,aft,top,bot,lef,rig],[hfnt,haft,htop,hbot,hlef,hrig]
+
+
+    def _build_half_cylinder(self,component):
+        # create base arrays
+        num = 100
+        r = np.ones((num,))
+        t = np.linspace(-np.pi/2.,np.pi/2.,num=num)
+        h = component._h
+        bbo, bbi = component._bbo, component._bbi
+        bto, bti = component._bto, component._bti
+        cbo, cbi = component._cbo, component._cbi
+        cto, cti = component._cto, component._cti
+
+        # create planar circles circle
+        fnt = np.block([ [0.*r  ], [bbo*r*np.cos(t)], [cbo*r*np.sin(t)] ])
+        aft = np.block([ [0.*r+h], [bto*r*np.cos(t)], [cto*r*np.sin(t)] ])
+        top = np.block([ 
+            [0.,h],
+            [0.,0.],
+            [-cbo,-cto]
+        ])
+        bot = np.block([ 
+            [0.,h],
+            [0.,0.],
+            [ cbo, cto]
+        ])
+        l0 = np.block([ 
+            [0.,0.],
+            [0.,0.],
+            [ cbi, cbo]
+        ])
+        l1 = np.block([ 
+            [0.,0.],
+            [0.,0.],
+            [-cbi,-cbo]
+        ])
+        l2 = np.block([ 
+            [h,h],
+            [0.,0.],
+            [ cti, cto]
+        ])
+        l3 = np.block([ 
+            [h,h],
+            [0.,0.],
+            [-cti,-cto]
+        ])
+        rig = np.block([ 
+            [0.,h],
+            [ bbo, bto],
+            [0.,0.]
+        ])
+
+        # create hollow lines
+        if bbi == bti == cbi == cti == 0.0:
+            hfnt = np.zeros((3,2))
+            haft = np.zeros((3,2))
+            htop = np.zeros((3,2))
+            hbot = np.zeros((3,2))
+            hrig = np.zeros((3,2))
+        else:
+            hfnt = fnt*1.
+            haft = aft*1.
+            htop = top*1.
+            hbot = bot*1.
+            hrig = rig*1.
+            hfnt[1] = hfnt[1]*bbi/bbo
+            hfnt[2] = hfnt[2]*cbi/cbo
+            haft[1] = haft[1]*bbi/bbo
+            haft[2] = haft[2]*cbi/cbo
+            htop[1] = htop[1]*bbi/bbo
+            htop[2] = htop[2]*cbi/cbo
+            hbot[1] = hbot[1]*bbi/bbo
+            hbot[2] = hbot[2]*cbi/cbo
+            hrig[1] = hrig[1]*bbi/bbo
+            hrig[2] = hrig[2]*cbi/cbo
+
+        return [fnt,aft,top,bot,l0,l1,l2,l3,rig],[hfnt,haft,htop,hbot,hrig]
 
 
     def _build_cuboid(self,component):
@@ -652,20 +758,23 @@ class AircraftSystem:
         return [rtu,rtl,ttu,ttl,lel,tel,upl,lol],None
 
 
-    def visualize(self,show_legend=False,filename=None):
+    def visualize(self,no_color=False,show_legend=False,filename=None):
         # initialize plot
         fig = plt.figure()
         ax = fig.add_subplot(111,projection='3d')
 
         # calculate component lines, plot
         ci = 0
-        colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+        if no_color:
+            colors = ["k"]
+        else:
+            colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
         collen = len(colors)
         x_lims = [1.0e+100, 1.0e-100]
         y_lims = [1.0e+100, 1.0e-100]
         z_lims = [1.0e+100, 1.0e-100]
         plottable_shapes = [
-            "sphere","cylinder","cuboid","rotor",
+            "sphere","cylinder","half_cylinder","cuboid","rotor",
             "symmetric_airfoil","diamond_airfoil"
         ]
         for i in self.components:
@@ -683,6 +792,8 @@ class AircraftSystem:
                         lines,hlines = self._build_sphere(component)
                     elif component.type == "cylinder":
                         lines,hlines = self._build_cylinder(component)
+                    elif component.type == "half_cylinder":
+                        lines,hlines = self._build_half_cylinder(component)
                     elif component.type == "cuboid":
                         lines,hlines = self._build_cuboid(component)
                     elif component.type == "rotor":
@@ -707,6 +818,8 @@ class AircraftSystem:
                         # shift by cg location
                         if component.type[-7:] == "airfoil":
                             cg = component._components[j].locations["root"]
+                        elif component.type[-8:] == "cylinder":
+                            cg = component.origin
                         line[0] += cg[0]
                         line[1] += cg[1]
                         line[2] += cg[2]
@@ -733,7 +846,11 @@ class AircraftSystem:
                             line = np.matmul(R_matrix,line)
 
                             # shift by cg location
-                            cg = component.get_cg_location()
+
+                            if component.type[-8:] == "cylinder":
+                                cg = component.origin
+                            else:
+                                cg = component.get_cg_location()
                             # cg = component.locations["root"]
                             line[0] += cg[0]
                             line[1] += cg[1]

@@ -269,7 +269,7 @@ class Cuboid(Component):
 
 
 
-class Cylinder(Component):
+class Cylinder_old(Component):
     """A default class for calculating and containing the mass properties of a
     Cylinder.
 
@@ -343,6 +343,298 @@ class Cylinder(Component):
         }
         return self.properties_dict
 
+
+
+class Cylinder(Component):
+    """A default class for calculating and containing the mass properties of a
+    Cylinder.
+
+    Parameters
+    ----------
+    input_vars : dict , optional
+        Must be a python dictionary
+    """
+    def __init__(self,input_dict={}):
+
+        # invoke init of parent
+        Component.__init__(self,input_dict)
+
+        # retrieve additional info
+        self._retrieve_info(input_dict)
+
+        # initialize the volume
+        bbo, cbo = self._bbo, self._cbo
+        bbi, cbi = self._bbi, self._cbi
+        bto, cto = self._bto, self._cto
+        bti, cti = self._bti, self._cti
+        kao = 2.*bbo*cbo + bbo*cto + bto*cbo + 2.*bto*cto
+        kai = 2.*bbi*cbi + bbi*cti + bti*cbi + 2.*bti*cti
+        self.volume = 1./6.*np.pi*self._h*(kao - kai)
+
+
+    def _retrieve_info(self,input_dict):
+        """A function which retrieves the information and stores it globally.
+        """
+        
+        # store variables from file input dictionary
+        # store cg location
+        connect_to = input_dict.get("connect_to",{})
+        x_cg = connect_to.get("dx",0.0)
+        y_cg = connect_to.get("dy",0.0)
+        z_cg = connect_to.get("dz",0.0)
+        self.origin = np.array([[x_cg],[y_cg],[z_cg]])
+
+        # store ellipse parameters
+        self._h = input_dict.get("length",1.0)
+        self._bbo = input_dict.get("base_outer_semi_y_axis",1.0)
+        self._cbo = input_dict.get("base_outer_semi_z_axis",self._bbo)
+        self._bbi = input_dict.get("base_inner_semi_y_axis",0.0)
+        self._cbi = input_dict.get("base_inner_semi_z_axis",self._bbi)
+        self._bto = input_dict.get("top_outer_semi_y_axis",self._bbo)
+        self._cto = input_dict.get("top_outer_semi_z_axis",self._bto)
+        self._bti = input_dict.get("top_inner_semi_y_axis",self._bbi)
+        self._cti = input_dict.get("top_inner_semi_z_axis",self._bti)
+
+
+    def _make_kappa_values(self):
+
+        # initialize certian values for ease of calculation
+        bbo, cbo = self._bbo, self._cbo
+        bbi, cbi = self._bbi, self._cbi
+        bto, cto = self._bto, self._cto
+        bti, cti = self._bti, self._cti
+
+        # calculate kappa values
+        self._kao = 2.*bbo*cbo + bbo*cto + bto*cbo + 2.*bto*cto
+        self._kai = 2.*bbi*cbi + bbi*cti + bti*cbi + 2.*bti*cti
+
+        self._kbo = bbo*cbo + bbo*cto + bto*cbo + 3.*bto*cto
+        self._kbi = bbi*cbi + bbi*cti + bti*cbi + 3.*bti*cti
+
+        self._kco = 2.*bbo*cbo + 3.*bbo*cto + 3.*bto*cbo + 12.*bto*cto
+        self._kci = 2.*bbi*cbi + 3.*bbi*cti + 3.*bti*cbi + 12.*bti*cti
+
+        self._kdo = bbo**3.*(4.*cbo + cto) + bbo**2.*bto*(3.*cbo + 2.*cto) \
+            + bbo*bto**2.*(2.*cbo + 3.*cto) + bto**3.*(cbo + 4.*cto)
+        self._kdi = bbi**3.*(4.*cbi + cti) + bbi**2.*bti*(3.*cbi + 2.*cti) \
+            + bbi*bti**2.*(2.*cbi + 3.*cti) + bti**3.*(cbi + 4.*cti)
+
+        self._keo = (4.*bbo + bto)*cbo**3. + (3.*bbo + 2.*bto)*cbo**2.*cto \
+            + (2.*bbo + 3.*bto)*cbo*cto**2. + (bbo + 4.*bto)*cto**3.
+        self._kei = (4.*bbi + bti)*cbi**3. + (3.*bbi + 2.*bti)*cbi**2.*cti \
+            + (2.*bbi + 3.*bti)*cbi*cti**2. + (bbi + 4.*bti)*cti**3.
+
+
+    def get_mass_properties(self):
+        """Method which returns mass, cg, I about cg rotated to total cframe"""
+
+        # calculate kappa values
+        self._make_kappa_values()
+
+        # calculate mass
+        if self._given_density_not_mass:
+            self.mass = self.density * self.volume
+        
+        # calculate center of gravity values
+        xbar = self._h*(self._kbo - self._kbi)/2./(self._kao - self._kai)
+        self.cg_location = np.array([xbar,0.,0.])[:,np.newaxis]
+
+        # calculate moments and products of inertia about the origin
+        num = self._kdo - self._kdi + self._keo - self._kei
+        Ixxo = self.mass*3.*num/40./(self._kao - self._kai)
+        
+        num = 3.*self._h**2.*(self._kco - self._kci)+4.*(self._keo - self._kei)
+        Iyyo = self.mass*3.*num/10./(self._kao - self._kai)
+        
+        num = 3.*self._h**2.*(self._kco - self._kci)+4.*(self._kdo - self._kdi)
+        Izzo = self.mass*3.*num/10./(self._kao - self._kai)
+
+        Ixyo = 0.
+        Ixzo = 0.
+        Iyzo = 0.
+
+        # create inertia tensor
+        Io = np.array([
+            [ Ixxo,-Ixyo,-Ixzo],
+            [-Ixyo, Iyyo,-Iyzo],
+            [-Ixzo,-Iyzo, Izzo]
+        ])
+
+        # calculate mass shift from parallel axis theorem
+        s = self.cg_location
+        inner_product = np.matmul(s.T,s)[0,0]
+        outer_product = np.matmul(s,s.T)
+        I_shift = self.mass*( inner_product * np.eye(3) - outer_product )
+
+        # calculate inertia tensor about the cg
+        self.inertia_tensor = Io - I_shift
+
+        self.properties_dict = {
+            "mass" : self.mass,
+            "volume" : self.volume,
+            "cg_location" : self.cg_location,
+            "angular_momentum" : self.angular_momentum,
+            "inertia_tensor" : self.inertia_tensor
+        }
+        return self.properties_dict
+
+
+    def get_cg_location(self,use_Lanham_approximations=False):
+        """Method which returns the cg location whether calculated using the
+        method presented or the Lanham method."""
+        
+        cg_location = np.matmul(self.R,self.cg_location)
+
+        print(self.R)
+        print(cg_location)
+        print(cg_location)
+
+        # shift cg by root location given
+        return cg_location + self.origin
+
+
+class HalfCylinder(Component):
+    """A default class for calculating and containing the mass properties of a
+    Cylinder.
+
+    Parameters
+    ----------
+    input_vars : dict , optional
+        Must be a python dictionary
+    """
+    def __init__(self,input_dict={}):
+
+        # invoke init of parent
+        Component.__init__(self,input_dict)
+
+        # retrieve additional info
+        self._retrieve_info(input_dict)
+
+        # initialize the volume
+        bbo, cbo = self._bbo, self._cbo
+        bbi, cbi = self._bbi, self._cbi
+        bto, cto = self._bto, self._cto
+        bti, cti = self._bti, self._cti
+        kao = 2.*bbo*cbo + bbo*cto + bto*cbo + 2.*bto*cto
+        kai = 2.*bbi*cbi + bbi*cti + bti*cbi + 2.*bti*cti
+        self.volume = 1./6.*np.pi*self._h*(kao - kai)
+
+
+    def _retrieve_info(self,input_dict):
+        """A function which retrieves the information and stores it globally.
+        """
+        
+        # store variables from file input dictionary
+        # store cg location
+        connect_to = input_dict.get("connect_to",{})
+        x_cg = connect_to.get("dx",0.0)
+        y_cg = connect_to.get("dy",0.0)
+        z_cg = connect_to.get("dz",0.0)
+        self.origin = np.array([[x_cg],[y_cg],[z_cg]])
+
+        # store ellipse parameters
+        self._h = input_dict.get("length",1.0)
+        self._bbo = input_dict.get("base_outer_semi_y_axis",1.0)
+        self._cbo = input_dict.get("base_outer_semi_z_axis",self._bbo)
+        self._bbi = input_dict.get("base_inner_semi_y_axis",0.0)
+        self._cbi = input_dict.get("base_inner_semi_z_axis",self._bbi)
+        self._bto = input_dict.get("top_outer_semi_y_axis",self._bbo)
+        self._cto = input_dict.get("top_outer_semi_z_axis",self._bto)
+        self._bti = input_dict.get("top_inner_semi_y_axis",self._bbi)
+        self._cti = input_dict.get("top_inner_semi_z_axis",self._bti)
+
+
+    def _make_kappa_values(self):
+
+        # initialize certian values for ease of calculation
+        bbo, cbo = self._bbo, self._cbo
+        bbi, cbi = self._bbi, self._cbi
+        bto, cto = self._bto, self._cto
+        bti, cti = self._bti, self._cti
+
+        # calculate kappa values
+        self._kao = 2.*bbo*cbo + bbo*cto + bto*cbo + 2.*bto*cto
+        self._kai = 2.*bbi*cbi + bbi*cti + bti*cbi + 2.*bti*cti
+
+        self._kbo = bbo*cbo + bbo*cto + bto*cbo + 3.*bto*cto
+        self._kbi = bbi*cbi + bbi*cti + bti*cbi + 3.*bti*cti
+
+        self._kco = 2.*bbo*cbo + 3.*bbo*cto + 3.*bto*cbo + 12.*bto*cto
+        self._kci = 2.*bbi*cbi + 3.*bbi*cti + 3.*bti*cbi + 12.*bti*cti
+
+        self._kdo = bbo**3.*(4.*cbo + cto) + bbo**2.*bto*(3.*cbo + 2.*cto) \
+            + bbo*bto**2.*(2.*cbo + 3.*cto) + bto**3.*(cbo + 4.*cto)
+        self._kdi = bbi**3.*(4.*cbi + cti) + bbi**2.*bti*(3.*cbi + 2.*cti) \
+            + bbi*bti**2.*(2.*cbi + 3.*cti) + bti**3.*(cbi + 4.*cti)
+
+        self._keo = (4.*bbo + bto)*cbo**3. + (3.*bbo + 2.*bto)*cbo**2.*cto \
+            + (2.*bbo + 3.*bto)*cbo*cto**2. + (bbo + 4.*bto)*cto**3.
+        self._kei = (4.*bbi + bti)*cbi**3. + (3.*bbi + 2.*bti)*cbi**2.*cti \
+            + (2.*bbi + 3.*bti)*cbi*cti**2. + (bbi + 4.*bti)*cti**3.
+
+
+    def get_mass_properties(self):
+        """Method which returns mass, cg, I about cg rotated to total cframe"""
+
+        # calculate kappa values
+        self._make_kappa_values()
+
+        # calculate mass
+        if self._given_density_not_mass:
+            self.mass = self.density * self.volume
+        
+        # calculate center of gravity values
+        xbar = self._h*(self._kbo - self._kbi)/2./(self._kao - self._kai)
+        self.cg_location = np.array([xbar,0.,0.])[:,np.newaxis]
+
+        # calculate moments and products of inertia about the origin
+        num = self._kdo - self._kdi + self._keo - self._kei
+        Ixxo = self.mass*3.*num/40./(self._kao - self._kai)
+        
+        num = 3.*self._h**2.*(self._kco - self._kci)+4.*(self._keo - self._kei)
+        Iyyo = self.mass*3.*num/10./(self._kao - self._kai)
+        
+        num = 3.*self._h**2.*(self._kco - self._kci)+4.*(self._kdo - self._kdi)
+        Izzo = self.mass*3.*num/10./(self._kao - self._kai)
+
+        Ixyo = 0.
+        Ixzo = 0.
+        Iyzo = 0.
+
+        # create inertia tensor
+        Io = np.array([
+            [ Ixxo,-Ixyo,-Ixzo],
+            [-Ixyo, Iyyo,-Iyzo],
+            [-Ixzo,-Iyzo, Izzo]
+        ])
+
+        # calculate mass shift from parallel axis theorem
+        s = self.cg_location
+        inner_product = np.matmul(s.T,s)[0,0]
+        outer_product = np.matmul(s,s.T)
+        I_shift = self.mass*( inner_product * np.eye(3) - outer_product )
+
+        # calculate inertia tensor about the cg
+        self.inertia_tensor = Io - I_shift
+
+        self.properties_dict = {
+            "mass" : self.mass,
+            "volume" : self.volume,
+            "cg_location" : self.cg_location,
+            "angular_momentum" : self.angular_momentum,
+            "inertia_tensor" : self.inertia_tensor
+        }
+        return self.properties_dict
+
+
+    def get_cg_location(self,use_Lanham_approximations=False):
+        """Method which returns the cg location whether calculated using the
+        method presented or the Lanham method."""
+        
+        cg_location = np.matmul(self.R,self.cg_location)
+
+        # shift cg by root location given
+        return cg_location + self.origin
 
 
 class Sphere(Component):
@@ -473,6 +765,7 @@ class Prismoid(Component):
             "root" : np.array(root_location)[:,np.newaxis],
             "tip"  : np.array( tip_location)[:,np.newaxis]
         }
+        self.origin = self.locations["root"]*1.
 
         # define a rotation matrix
         CG = np.cos(-self._delta*self._Gamma)

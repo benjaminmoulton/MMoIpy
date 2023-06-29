@@ -21,9 +21,15 @@
                 "dz" :  -2.0
             },
             "orientation" : [0.0,30.0,30.0],
-            "radius" : 0.5,
-            "hollow_radius" : 0.45,
-            "length" : 9.0
+            "base_outer_semi_y_axis" : 1.5,
+            "base_outer_semi_z_axis" : 2.0,
+            "base_inner_semi_y_axis" : 0.5,
+            "base_inner_semi_z_axis" : 0.1,
+            "top_outer_semi_y_axis" : 1.2,
+            "top_outer_semi_z_axis" : 1.6,
+            "top_inner_semi_y_axis" : 0.8,
+            "top_inner_semi_z_axis" : 0.6,
+            "length" : 3.5
         },
         "wing" : {
             "ID" : 3,

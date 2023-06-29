@@ -1,0 +1,42 @@
+{
+    "components" : {
+        "cylinder" : {
+            "ID" : 1,
+            "mass" : 20.0,
+            "type" : "cylinder",
+            "connect_to" : {
+                "dx" :  3.5,
+                "dz" :  -2.0
+            },
+            "orientation" : [0.0,0.0,0.0],
+            "base_outer_semi_y_axis" : 1.0,
+            "base_outer_semi_z_axis" : 2.0,
+            "base_inner_semi_y_axis" : 0.5,
+            "base_inner_semi_z_axis" : 1.0,
+            "top_outer_semi_y_axis" : 2.0,
+            "top_outer_semi_z_axis" : 1.0,
+            "top_inner_semi_y_axis" : 1.0,
+            "top_inner_semi_z_axis" : 0.5,
+            "length" : 2.0
+        },
+        "half_cylinder" : {
+            "ID" : 2,
+            "mass" : 10.0,
+            "type" : "half_cylinder",
+            "connect_to" : {
+                "dx" :  5.5,
+                "dz" :  -2.0
+            },
+            "orientation" : [-90.0,0.0,0.0],
+            "base_outer_semi_y_axis" : 1.0,
+            "base_outer_semi_z_axis" : 2.0,
+            "base_inner_semi_y_axis" : 0.5,
+            "base_inner_semi_z_axis" : 1.0,
+            "top_outer_semi_y_axis" : 2.0,
+            "top_outer_semi_z_axis" : 1.0,
+            "top_inner_semi_y_axis" : 1.0,
+            "top_inner_semi_z_axis" : 0.5,
+            "length" : 2.0
+        }
+    }
+}
