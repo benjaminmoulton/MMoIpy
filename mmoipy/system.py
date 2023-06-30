@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.axes3d as ax3
 
 from wing import Wing
-from component import Component, Cuboid, Cylinder, HalfCylinder, Sphere, Rotor
+from component import Component, Cuboid, Cylinder, HalfCylinder, Sphere
+from component import Ellipsoid, HalfEllipsoid, Rotor
 
 class AircraftSystem:
     """A class calculating and containing the mass properties of an aircraft.
@@ -92,7 +93,8 @@ class AircraftSystem:
 
         wing_types = ["prismoid","pseudo_prismoid","symmetric_airfoil",
         "diamond_airfoil"]
-        comp_types = ["cuboid","cylinder","half_cylinder","sphere","rotor"]
+        comp_types = ["cuboid","cylinder","half_cylinder","sphere",
+        "ellipsoid","half_ellipsoid","rotor"]
 
         # initialize get each id number
         ids = []; attach_ids = []; name = []
@@ -159,6 +161,10 @@ class AircraftSystem:
                 self.components[id_number] = HalfCylinder(input_dict)
             elif input_dict["type"] == "sphere":
                 self.components[id_number] = Sphere(input_dict)
+            elif input_dict["type"] == "ellipsoid":
+                self.components[id_number] = Ellipsoid(input_dict)
+            elif input_dict["type"] == "half_ellipsoid":
+                self.components[id_number] = HalfEllipsoid(input_dict)
             elif input_dict["type"] == "rotor":
                 self.components[id_number] = Rotor(input_dict)
             
@@ -295,7 +301,7 @@ class AircraftSystem:
         self.cg_location = np.zeros((3,1))
         for i in self.components:
             self.cg_location += self.components[i].mass * \
-                self.components[i].cg_location
+                self.components[i].get_cg_location()
         self.cg_location /= self.mass
         
         # determine lanham cg location
@@ -375,9 +381,13 @@ class AircraftSystem:
                 for i in self.components:
                     if i != 0:
                         info = self.components[i].properties_dict
-                        info["origin_inertia_tensor"] = \
+                        shifted_dict = \
                             self.components[i].shift_properties_to_location(\
-                            np.zeros((3,1)))["inertia_tensor"]
+                            np.zeros((3,1)))
+                        info["origin_inertia_tensor"] = \
+                            shifted_dict["inertia_tensor"]
+                        info["cg_location"] = \
+                            shifted_dict["cg_location"]
                         name = self.components[i].name
                         self.report_as_SolidWorks_report(info,positive_tensor,False,name)
                         if use_Lanham:
@@ -409,7 +419,7 @@ class AircraftSystem:
         self.cg_location = np.zeros((3,1))
         for i in self.components:
             self.cg_location += self.components[i].mass * \
-                self.components[i].cg_location
+                self.components[i].get_cg_location()
         self.cg_location /= self.mass
         
         # determine total angular momentum
@@ -468,6 +478,61 @@ class AircraftSystem:
         hxy = xy*component.r1/component.r2
         hxz = xz*component.r1/component.r2
         hyz = yz*component.r1/component.r2
+
+        return [xy,xz,yz],[hxy,hxz,hyz]
+
+
+    def _build_ellipsoid(self,component):
+        # create base arrays
+        num = 100
+        r = np.ones((num,))
+        t = np.linspace(0.,2.*np.pi,num=num)
+
+        # read in components
+        ao = component._ao
+        bo = component._bo
+        co = component._co
+        ai = component._ai
+        bi = component._bi
+        ci = component._ci
+
+        # create planar circles circle
+        xy = np.block([ [ao*r*np.cos(t)], [bo*r*np.sin(t)], [0.*r] ])
+        xz = np.block([ [ao*r*np.cos(t)], [0.*r], [co*r*np.sin(t)] ])
+        yz = np.block([ [0.*r], [bo*r*np.cos(t)], [co*r*np.sin(t)] ])
+
+        # create hollow lines
+        hxy = np.block([ [ai*r*np.cos(t)], [bi*r*np.sin(t)], [0.*r] ])
+        hxz = np.block([ [ai*r*np.cos(t)], [0.*r], [ci*r*np.sin(t)] ])
+        hyz = np.block([ [0.*r], [bi*r*np.cos(t)], [ci*r*np.sin(t)] ])
+
+        return [xy,xz,yz],[hxy,hxz,hyz]
+
+
+    def _build_half_ellipsoid(self,component):
+        # create base arrays
+        num = 100
+        r = np.ones((num,))
+        t = np.linspace(0.,2.*np.pi,num=num)
+        h = np.linspace(-np.pi/2.,np.pi/2.,num=num)
+
+        # read in components
+        ao = component._ao
+        bo = component._bo
+        co = component._co
+        ai = component._ai
+        bi = component._bi
+        ci = component._ci
+
+        # create planar circles circle
+        xy = np.block([ [ao*r*np.cos(h)], [bo*r*np.sin(h)], [0.*r] ])
+        xz = np.block([ [ao*r*np.cos(h)], [0.*r], [co*r*np.sin(h)] ])
+        yz = np.block([ [0.*r], [bo*r*np.cos(t)], [co*r*np.sin(t)] ])
+
+        # create hollow lines
+        hxy = np.block([ [ai*r*np.cos(h)], [bi*r*np.sin(h)], [0.*r] ])
+        hxz = np.block([ [ai*r*np.cos(h)], [0.*r], [ci*r*np.sin(h)] ])
+        hyz = np.block([ [0.*r], [bi*r*np.cos(t)], [ci*r*np.sin(t)] ])
 
         return [xy,xz,yz],[hxy,hxz,hyz]
 
@@ -758,10 +823,16 @@ class AircraftSystem:
         return [rtu,rtl,ttu,ttl,lel,tel,upl,lol],None
 
 
-    def visualize(self,no_color=False,show_legend=False,filename=None):
+    def visualize(self,no_color=False,show_legend=False,plot_ids=None,
+    filename=None):
         # initialize plot
         fig = plt.figure()
         ax = fig.add_subplot(111,projection='3d')
+
+        # which ids to plot, or all
+        if plot_ids == None:
+            plot_ids = self.components.keys()
+        
 
         # calculate component lines, plot
         ci = 0
@@ -774,10 +845,11 @@ class AircraftSystem:
         y_lims = [1.0e+100, 1.0e-100]
         z_lims = [1.0e+100, 1.0e-100]
         plottable_shapes = [
-            "sphere","cylinder","half_cylinder","cuboid","rotor",
-            "symmetric_airfoil","diamond_airfoil"
+            "sphere","ellipsoid","half_ellipsoid",
+            "cylinder","half_cylinder",
+            "cuboid","rotor","symmetric_airfoil","diamond_airfoil"
         ]
-        for i in self.components:
+        for i in plot_ids:
             # build object by type
             component = self.components[i]
             if component.type in plottable_shapes:
@@ -790,6 +862,10 @@ class AircraftSystem:
                 for j in range(nums):
                     if component.type == "sphere":
                         lines,hlines = self._build_sphere(component)
+                    elif component.type == "ellipsoid":
+                        lines,hlines = self._build_ellipsoid(component)
+                    elif component.type == "half_ellipsoid":
+                        lines,hlines = self._build_half_ellipsoid(component)
                     elif component.type == "cylinder":
                         lines,hlines = self._build_cylinder(component)
                     elif component.type == "half_cylinder":
@@ -818,7 +894,8 @@ class AircraftSystem:
                         # shift by cg location
                         if component.type[-7:] == "airfoil":
                             cg = component._components[j].locations["root"]
-                        elif component.type[-8:] == "cylinder":
+                        elif component.type[-8:] == "cylinder" or \
+                            component.type == "half_ellipsoid":
                             cg = component.origin
                         line[0] += cg[0]
                         line[1] += cg[1]
@@ -847,7 +924,8 @@ class AircraftSystem:
 
                             # shift by cg location
 
-                            if component.type[-8:] == "cylinder":
+                            if component.type[-8:] == "cylinder" or \
+                                component.type == "half_ellipsoid":
                                 cg = component.origin
                             else:
                                 cg = component.get_cg_location()

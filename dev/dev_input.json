@@ -1,36 +1,5 @@
 {
     "components" : {
-        "sphere" : {
-            "ID" : 1,
-            "mass" : 5.0,
-            "type" : "sphere",
-            "connect_to" : {
-                "dx" :  8.0,
-                "dy" :  3.0
-            },
-            "orientation" : [0.0,0.0,0.0],
-            "radius" : 0.5,
-            "hollow_radius" : 0.4
-        },
-        "cylinder" : {
-            "ID" : 2,
-            "mass" : 20.0,
-            "type" : "cylinder",
-            "connect_to" : {
-                "dx" :  3.5,
-                "dz" :  -2.0
-            },
-            "orientation" : [0.0,30.0,30.0],
-            "base_outer_semi_y_axis" : 1.5,
-            "base_outer_semi_z_axis" : 2.0,
-            "base_inner_semi_y_axis" : 0.5,
-            "base_inner_semi_z_axis" : 0.1,
-            "top_outer_semi_y_axis" : 1.2,
-            "top_outer_semi_z_axis" : 1.6,
-            "top_inner_semi_y_axis" : 0.8,
-            "top_inner_semi_z_axis" : 0.6,
-            "length" : 3.5
-        },
         "wing" : {
             "ID" : 3,
             "mass" : 30.0,
@@ -77,13 +46,13 @@
             "connect_to" : {
                 "ID" : 3,
                 "location" : "tip",
-                "dx" :  -1.5,
+                "dx" :  -1.75,
                 "dy" :  0.0,
                 "dz" :  0.0
             },
             "orientation" : [0.0, 0.0, 0.0],
             "density" : 1.90407447947,
-            "radius" : 0.25,
+            "base_outer_semi_y_axis" : 0.25,
             "length" : 0.5
         },
         "cuboid" : {
@@ -119,6 +88,76 @@
                         [1.0, 0.2]],
             "thickness" : [ [0.0, 0.08],
                             [1.0, 0.16]]
+        },
+        "cylinder" : {
+            "ID" : 8,
+            "mass" : 20.0,
+            "type" : "cylinder",
+            "connect_to" : {
+                "dx" :  3.5,
+                "dz" :  -2.0
+            },
+            "orientation" : [0.0,0.0,0.0],
+            "base_outer_semi_y_axis" : 1.0,
+            "base_outer_semi_z_axis" : 2.0,
+            "base_inner_semi_y_axis" : 0.5,
+            "base_inner_semi_z_axis" : 1.0,
+            "top_outer_semi_y_axis" : 2.0,
+            "top_outer_semi_z_axis" : 1.0,
+            "top_inner_semi_y_axis" : 1.0,
+            "top_inner_semi_z_axis" : 0.5,
+            "length" : 2.0
+        },
+        "half_cylinder" : {
+            "ID" : 9,
+            "mass" : 10.0,
+            "type" : "half_cylinder",
+            "connect_to" : {
+                "dx" :  5.5,
+                "dz" :  -2.0
+            },
+            "orientation" : [0.0,0.0,0.0],
+            "base_outer_semi_y_axis" : 1.0,
+            "base_outer_semi_z_axis" : 2.0,
+            "base_inner_semi_y_axis" : 0.5,
+            "base_inner_semi_z_axis" : 1.0,
+            "top_outer_semi_y_axis" : 2.0,
+            "top_outer_semi_z_axis" : 1.0,
+            "top_inner_semi_y_axis" : 1.0,
+            "top_inner_semi_z_axis" : 0.5,
+            "length" : 2.0
+        },
+        "ellipsoid" : {
+            "ID" : 10,
+            "mass" : 20.0,
+            "type" : "ellipsoid",
+            "connect_to" : {
+                "dx" :  3.5,
+                "dz" :  -2.0
+            },
+            "orientation" : [0.0,0.0,0.0],
+            "outer_semi_x_axis" : 3.0,
+            "outer_semi_y_axis" : 1.0,
+            "outer_semi_z_axis" : 2.0,
+            "inner_semi_x_axis" : 1.5,
+            "inner_semi_y_axis" : 0.5,
+            "inner_semi_z_axis" : 1.0
+        },
+        "half_ellipsoid" : {
+            "ID" : 11,
+            "mass" : 20.0,
+            "type" : "half_ellipsoid",
+            "connect_to" : {
+                "dx" :  3.5,
+                "dz" :  -2.0
+            },
+            "orientation" : [0.0,0.0,0.0],
+            "outer_semi_x_axis" : 3.0,
+            "outer_semi_y_axis" : 1.0,
+            "outer_semi_z_axis" : 2.0,
+            "inner_semi_x_axis" : 1.5,
+            "inner_semi_y_axis" : 0.5,
+            "inner_semi_z_axis" : 1.0
         }
     }
 }

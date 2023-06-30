@@ -1,0 +1,36 @@
+{
+    "components" : {
+        "ellipsoid" : {
+            "ID" : 1,
+            "mass" : 20.0,
+            "type" : "ellipsoid",
+            "connect_to" : {
+                "dx" :  3.5,
+                "dz" :  -2.0
+            },
+            "orientation" : [0.0,0.0,0.0],
+            "outer_semi_x_axis" : 3.0,
+            "outer_semi_y_axis" : 1.0,
+            "outer_semi_z_axis" : 2.0,
+            "inner_semi_x_axis" : 1.5,
+            "inner_semi_y_axis" : 0.5,
+            "inner_semi_z_axis" : 1.0
+        },
+        "half_ellipsoid" : {
+            "ID" : 2,
+            "mass" : 20.0,
+            "type" : "half_ellipsoid",
+            "connect_to" : {
+                "dx" :  3.5,
+                "dz" :  -2.0
+            },
+            "orientation" : [0.0,90.0,0.0],
+            "outer_semi_x_axis" : 3.0,
+            "outer_semi_y_axis" : 1.0,
+            "outer_semi_z_axis" : 2.0,
+            "inner_semi_x_axis" : 1.5,
+            "inner_semi_y_axis" : 0.5,
+            "inner_semi_z_axis" : 1.0
+        }
+    }
+}
