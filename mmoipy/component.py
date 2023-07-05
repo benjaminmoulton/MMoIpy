@@ -107,9 +107,11 @@ class Component:
         
         # rotate inertia, cg location for rotation values
         if use_Lanham and self.can_use_Lanham:
-            inertia_tensor = np.matmul(self.R0,np.matmul(self.inertia_tensor_lanham,self.R0.T))
+            inertia_tensor = np.matmul(self.R0,\
+                np.matmul(self.inertia_tensor_lanham,self.R0.T))
         else:
-            inertia_tensor = np.matmul(self.R,np.matmul(self.inertia_tensor,self.R.T))
+            inertia_tensor = np.matmul(self.R,\
+                np.matmul(self.inertia_tensor,self.R.T))
 
         # shift cg by root location given to aircraft coordinate system
         new_cg_location = self.get_cg_location(use_Lanham)

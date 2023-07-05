@@ -26,9 +26,9 @@ if __name__ == "__main__":
     # CRM = mmoi(exampl_directory + "CRM.json")
     # CRM.visualize()
 
-    # # test new cylinders
-    # ex_2 = mmoi("dev_cylinder_input.json")
-    # ex_2.get_mass_properties(report=True,individual=True)
+    # test new cylinders
+    ex_2 = mmoi("dev_cylinder_input.json")
+    ex_2.get_mass_properties(report=True,individual=True)
     # # ex_2.visualize()
 
     # # test ellipsoid
@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     # save plots of objects
     ex_4 = mmoi("dev_input.json")
-    keys = ex_4.components.keys()
-    for i in keys:
-        ex_4.visualize(no_color=True,plot_ids=[i],
-            filename=docs_directory + ex_4.components[i].name + ".png")
+    # keys = ex_4.components.keys()
+    # for i in keys:
+    #     ex_4.visualize(no_color=True,plot_ids=[i],
+    #         filename=docs_directory + ex_4.components[i].name + ".png")

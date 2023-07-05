@@ -150,7 +150,7 @@ class AircraftSystem:
                 input_dict["connect_to"].get("dz",0.0) + loc[2,0]
 
 
-            # initialize wings
+            # initialize components
             if input_dict["type"] in wing_types:
                 self.components[id_number] = Wing(input_dict)
             elif input_dict["type"] == "cuboid":
@@ -187,7 +187,8 @@ class AircraftSystem:
                 self.components[comp_id].update_densities()
 
 
-    def report_as_SolidWorks_report(self,info,positive_tensor=True,use_Lanham=False,name=""):
+    def report_as_SolidWorks_report(self,info,positive_tensor=True,
+        use_Lanham=False,name="",report_units=False):
         """Method which reports the mass and inertia properties as given in 
         SolidWorks.
         
@@ -222,19 +223,27 @@ class AircraftSystem:
             info["volume"] /= (0.3048**3.)
             info["inertia_tensor"] /= 14.59390 * (0.3048)**2.
 
-        print(intro+"Mass = {:> 10.8f} slugs".format(info["mass"]))
+        if report_units: units = " slugs"
+        else: units = ""
+        print(intro+"Mass = {:> 10.8f}{}".format(info["mass"],units))
         print()
 
-        print(intro+"Volume = {:> 10.8f} cubic feet".format(info["volume"]))
+        if report_units: units = " cubic feet"
+        else: units = ""
+        print(intro+"Volume = {:> 10.8f}{}".format(info["volume"],units))
         print()
 
-        print(intro+"Center of mass: (feet)")
+        if report_units: units = " (feet)"
+        else: units = ""
+        print(intro+"Center of mass:{}".format(units))
         print("\tX = {:> 14.8f}".format(info["cg_location"][0,0]))
         print("\tY = {:> 14.8f}".format(info["cg_location"][1,0]))
         print("\tZ = {:> 14.8f}".format(info["cg_location"][2,0]))
         print()
         
-        print(intro+"Angular momentum: (slugs * square feet / seconds)")
+        if report_units: units = " (slugs * square feet / seconds)"
+        else: units = ""
+        print(intro+"Angular momentum:{}".format(units))
         print("\tX = {:> 14.8f}".format(info["angular_momentum"][0,0]))
         print("\tY = {:> 14.8f}".format(info["angular_momentum"][1,0]))
         print("\tZ = {:> 14.8f}".format(info["angular_momentum"][2,0]))
@@ -244,7 +253,10 @@ class AircraftSystem:
         if positive_tensor:
             I[[0,0,1,1,2,2],[1,2,0,2,0,1]] *= -1.0
         [[Ixx,Ixy,Ixz],[Iyx,Iyy,Iyz],[Izx,Izy,Izz]] = I
-        print(intro+"Moment of inertia about the CG:( slugs * square feet)")
+        if report_units: units = "( slugs * square feet)"
+        else: units = ""
+        print(intro+"Moment of inertia about the CG" \
+            + " aligned with system coordinate frame:{}".format(units))
         if positive_tensor:
             print("\t\tPositive Tensor Formulation")
         else:
@@ -261,7 +273,8 @@ class AircraftSystem:
         if positive_tensor:
             I[[0,0,1,1,2,2],[1,2,0,2,0,1]] *= -1.0
         [[Ixx,Ixy,Ixz],[Iyx,Iyy,Iyz],[Izx,Izy,Izz]] = I
-        print(intro+"Moment of inertia about the origin:( slugs * square feet)")
+        print(intro+"Moment of inertia about the origin" \
+            + " aligned with system coordinate frame:{}".format(units))
         if positive_tensor:
             print("\t\tPositive Tensor Formulation")
         else:
@@ -388,6 +401,11 @@ class AircraftSystem:
                             shifted_dict["inertia_tensor"]
                         info["cg_location"] = \
                             shifted_dict["cg_location"]
+                        shifted_dic2 = \
+                            self.components[i].shift_properties_to_location(\
+                            self.components[i].cg_location)
+                        info["inertia_tensor"] = \
+                            shifted_dic2["inertia_tensor"]
                         name = self.components[i].name
                         self.report_as_SolidWorks_report(info,positive_tensor,False,name)
                         if use_Lanham:

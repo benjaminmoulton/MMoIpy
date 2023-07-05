@@ -1,5 +1,26 @@
 {
     "components" : {
+        "half_cylinder" : {
+            "ID" : 1,
+            "density" : 0.00418,
+            "type" : "half_cylinder",
+            "connect_to" : {
+                "dx" :  0.0,
+                "dz" :  0.0
+            },
+            "orientation" : [180.0,0.0,0.0],
+            "base_outer_semi_y_axis" : 1.0,
+            "base_outer_semi_z_axis" : 2.0,
+            "base_inner_semi_y_axis" : 0.0,
+            "base_inner_semi_z_axis" : 0.0,
+            "top_outer_semi_y_axis" : 0.25,
+            "top_outer_semi_z_axis" : 0.5,
+            "top_inner_semi_y_axis" : 0.0,
+            "top_inner_semi_z_axis" : 0.0,
+            "length" : 7.7
+        }
+    },
+    "unused_components" : {
         "cylinder" : {
             "ID" : 1,
             "mass" : 20.0,
