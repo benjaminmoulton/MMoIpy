@@ -29,7 +29,7 @@
                 "dx" :  -1.5
             },
             "orientation" : [0.0, 0.0, 0.0],
-            "number_blades" : 20,
+            "number_blades" : 5,
             "diameter_hub" : 0.5,
             "diameter_rotor" : 3.0,
             "rotation_rate" : 20.0,

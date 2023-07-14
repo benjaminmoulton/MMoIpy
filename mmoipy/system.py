@@ -771,14 +771,17 @@ class AircraftSystem:
         art = np.block([ [0.*t-h[ 0]/2.], [rr*np.cos(t)], [rr*np.sin(t)] ])
         ftp = np.block([ [0.*t+h[-1]/2.], [rt*np.cos(t)], [rt*np.sin(t)] ])
         atp = np.block([ [0.*t-h[-1]/2.], [rt*np.cos(t)], [rt*np.sin(t)] ])
+
+        draws = [frt,art,ftp,atp] #+ [fht,aht,fhb,ahb]
+
         # lines
-        fht = np.block([ [0.*t+h/2.], [0.*h], [-r] ])
-        aht = np.block([ [0.*t-h/2.], [0.*h], [-r] ])
-        fhb = np.block([ [0.*t+h/2.], [0.*h], [ r] ])
-        ahb = np.block([ [0.*t-h/2.], [0.*h], [ r] ])
+        for i in range(Nb):
+            p = np.deg2rad(i*360./Nb)
+            draws.append( np.block([ [+h/2.], [r*np.sin(p)], [-r*np.cos(p)] ]))
+            draws.append( np.block([ [-h/2.], [r*np.sin(p)], [-r*np.cos(p)] ]))
 
 
-        return [frt,art,ftp,atp,fht,aht,fhb,ahb],None
+        return draws,None
 
 
     def _build_symmetric_airfoil(self,component):
@@ -859,9 +862,9 @@ class AircraftSystem:
         else:
             colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
         collen = len(colors)
-        x_lims = [1.0e+100, 1.0e-100]
-        y_lims = [1.0e+100, 1.0e-100]
-        z_lims = [1.0e+100, 1.0e-100]
+        x_lims = [1.0e+100, -1.0e100]
+        y_lims = [1.0e+100, -1.0e100]
+        z_lims = [1.0e+100, -1.0e100]
         plottable_shapes = [
             "sphere","ellipsoid","half_ellipsoid",
             "cylinder","half_cylinder",
@@ -970,25 +973,25 @@ class AircraftSystem:
         # set axes lengths
 
         # Find out which axis has the widest limits
-        x_diff = x_lims[1]-x_lims[0]
-        y_diff = y_lims[1]-y_lims[0]
-        z_diff = z_lims[1]-z_lims[0]
+        x_diff = x_lims[1] - x_lims[0]
+        y_diff = y_lims[1] - y_lims[0]
+        z_diff = z_lims[1] - z_lims[0]
         max_diff = max([x_diff, y_diff, z_diff])
 
         # Determine the center of each set of axis limits
-        x_cent = x_lims[0]+0.5*x_diff
-        y_cent = y_lims[0]+0.5*y_diff
-        z_cent = z_lims[0]+0.5*z_diff
+        x_cent = x_lims[0] + 0.5*x_diff
+        y_cent = y_lims[0] + 0.5*y_diff
+        z_cent = z_lims[0] + 0.5*z_diff
 
         # Scale the axis limits so they all have the same width as the widest set
-        x_lims[0] = x_cent-0.5*max_diff
-        x_lims[1] = x_cent+0.5*max_diff
+        x_lims[0] = x_cent - 0.5*max_diff
+        x_lims[1] = x_cent + 0.5*max_diff
 
-        y_lims[0] = y_cent-0.5*max_diff
-        y_lims[1] = y_cent+0.5*max_diff
+        y_lims[0] = y_cent - 0.5*max_diff
+        y_lims[1] = y_cent + 0.5*max_diff
 
-        z_lims[0] = z_cent-0.5*max_diff
-        z_lims[1] = z_cent+0.5*max_diff
+        z_lims[0] = z_cent - 0.5*max_diff
+        z_lims[1] = z_cent + 0.5*max_diff
 
         # Set limits so it is a right-handed coordinate system with z pointing down
         ax.set_xlim3d(x_lims[1], x_lims[0])
