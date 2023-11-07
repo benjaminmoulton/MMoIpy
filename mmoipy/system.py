@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.axes3d as ax3
 
 from wing import Wing
-from component import Component, Cuboid, Cylinder, HalfCylinder, Sphere
+from component import Component, Cuboid, Cylinder, HalfCylinder, Sphere, Cylinder_old
 from component import Ellipsoid, HalfEllipsoid, Rotor
 
 class AircraftSystem:
@@ -93,8 +93,8 @@ class AircraftSystem:
 
         wing_types = ["prismoid","pseudo_prismoid","symmetric_airfoil",
         "diamond_airfoil"]
-        comp_types = ["cuboid","cylinder","half_cylinder","sphere",
-        "ellipsoid","half_ellipsoid","rotor"]
+        comp_types = ["cuboid","cylinder","half_cylinder","cylinder_old",
+        "sphere","ellipsoid","half_ellipsoid","rotor"]
 
         # initialize get each id number
         ids = []; attach_ids = []; name = []
@@ -159,6 +159,8 @@ class AircraftSystem:
                 self.components[id_number] = Cylinder(input_dict)
             elif input_dict["type"] == "half_cylinder":
                 self.components[id_number] = HalfCylinder(input_dict)
+            elif input_dict["type"] == "cylinder_old":
+                self.components[id_number] = Cylinder_old(input_dict)
             elif input_dict["type"] == "sphere":
                 self.components[id_number] = Sphere(input_dict)
             elif input_dict["type"] == "ellipsoid":
@@ -403,7 +405,7 @@ class AircraftSystem:
                             shifted_dict["cg_location"]
                         shifted_dic2 = \
                             self.components[i].shift_properties_to_location(\
-                            self.components[i].cg_location)
+                            self.components[i].get_cg_location())
                         info["inertia_tensor"] = \
                             shifted_dic2["inertia_tensor"]
                         name = self.components[i].name
@@ -1003,9 +1005,9 @@ class AircraftSystem:
         ax.set_ylabel("y")
         ax.set_zlabel("z")
         white = ( 0.0,0.0,0.0,0.0)
-        ax.w_xaxis.set_pane_color(white)
-        ax.w_yaxis.set_pane_color(white)
-        ax.w_zaxis.set_pane_color(white)
+        ax.xaxis.set_pane_color(white)
+        ax.yaxis.set_pane_color(white)
+        ax.zaxis.set_pane_color(white)
         plt.tight_layout()
         # ax.invert_xaxis()
         ax.view_init(30.,-140)

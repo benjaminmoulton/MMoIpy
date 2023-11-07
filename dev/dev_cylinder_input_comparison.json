@@ -1,0 +1,34 @@
+{
+    "components" : {
+        "cylinder_one" : {
+            "ID" : 1,
+            "density" : 1.0,
+            "type" : "cylinder",
+            "connect_to" : {
+                "dx" :  29.5,
+                "dz" :  -2.0
+            },
+            "base_outer_semi_y_axis" : 0.5,
+            "base_outer_semi_z_axis" : 0.5,
+            "base_inner_semi_y_axis" : 0.0,
+            "base_inner_semi_z_axis" : 0.0,
+            "top_outer_semi_y_axis" : 0.5,
+            "top_outer_semi_z_axis" : 0.5,
+            "top_inner_semi_y_axis" : 0.0,
+            "top_inner_semi_z_axis" : 0.0,
+            "length" : 2.0
+        },
+        "cylinder_two" : {
+            "ID" : 2,
+            "density" : 1.0,
+            "type" : "cylinder_old",
+            "connect_to" : {
+                "dx" :  30.5,
+                "dz" :  -2.0
+            },
+            "radius" : 0.5,
+            "hollow_radius" : 0.0,
+            "length" : 2.0
+        }
+    }
+}
