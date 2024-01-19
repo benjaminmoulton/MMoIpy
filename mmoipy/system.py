@@ -232,23 +232,23 @@ class AircraftSystem:
 
         if report_units: units = " cubic feet"
         else: units = ""
-        print(intro+"Volume = {:> 10.8f}{}".format(info["volume"],units))
+        print(intro+"Volume = {:> 10.8f}{}".format(info["volume"]*lx**3,units))
         print()
 
         if report_units: units = " (feet)"
         else: units = ""
         print(intro+"Center of mass:{}".format(units))
-        print("\tX = {:> 14.8f}".format(info["cg_location"][0,0]))
-        print("\tY = {:> 14.8f}".format(info["cg_location"][1,0]))
-        print("\tZ = {:> 14.8f}".format(info["cg_location"][2,0]))
+        print("\tX = {:> 14.8f}".format(info["cg_location"][0,0]*lx))
+        print("\tY = {:> 14.8f}".format(info["cg_location"][1,0]*lx))
+        print("\tZ = {:> 14.8f}".format(info["cg_location"][2,0]*lx))
         print()
         
         if report_units: units = " (slugs * square feet / seconds)"
         else: units = ""
         print(intro+"Angular momentum:{}".format(units))
-        print("\tX = {:> 14.8f}".format(info["angular_momentum"][0,0]))
-        print("\tY = {:> 14.8f}".format(info["angular_momentum"][1,0]))
-        print("\tZ = {:> 14.8f}".format(info["angular_momentum"][2,0]))
+        print("\tX = {:> 14.8f}".format(info["angular_momentum"][0,0]*mx/lx**2))
+        print("\tY = {:> 14.8f}".format(info["angular_momentum"][1,0]*mx/lx**2))
+        print("\tZ = {:> 14.8f}".format(info["angular_momentum"][2,0]*mx/lx**2))
         print()
         
         I = info["inertia_tensor"] * 1.0
@@ -264,11 +264,11 @@ class AircraftSystem:
         else:
             print("\t\tNegative Tensor Formulation")
         print("\tIxx = {:> 19.8f}\tIxy = {:> 19.8f}\tIxz = {:> 19.8f}".format(\
-            Ixx,Ixy,Ixz))
+            Ixx*mx*lx**2,Ixy*mx*lx**2,Ixz*mx*lx**2))
         print("\tIyx = {:> 19.8f}\tIyy = {:> 19.8f}\tIyz = {:> 19.8f}".format(\
-            Iyx,Iyy,Iyz))
+            Iyx*mx*lx**2,Iyy*mx*lx**2,Iyz*mx*lx**2))
         print("\tIzx = {:> 19.8f}\tIzy = {:> 19.8f}\tIzz = {:> 19.8f}".format(\
-            Izx,Izy,Izz))
+            Izx*mx*lx**2,Izy*mx*lx**2,Izz*mx*lx**2))
         print()
         
         I = info["origin_inertia_tensor"] * 1.0
@@ -282,11 +282,11 @@ class AircraftSystem:
         else:
             print("\t\tNegative Tensor Formulation")
         print("\tIxx = {:> 19.8f}\tIxy = {:> 19.8f}\tIxz = {:> 19.8f}".format(\
-            Ixx,Ixy,Ixz))
+            Ixx*mx*lx**2,Ixy*mx*lx**2,Ixz*mx*lx**2))
         print("\tIyx = {:> 19.8f}\tIyy = {:> 19.8f}\tIyz = {:> 19.8f}".format(\
-            Iyx,Iyy,Iyz))
+            Iyx*mx*lx**2,Iyy*mx*lx**2,Iyz*mx*lx**2))
         print("\tIzx = {:> 19.8f}\tIzy = {:> 19.8f}\tIzz = {:> 19.8f}".format(\
-            Izx,Izy,Izz))
+            Izx*mx*lx**2,Izy*mx*lx**2,Izz*mx*lx**2))
         print()
         print((symbol * 50)[:-3])
 

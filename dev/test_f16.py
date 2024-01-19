@@ -11,4 +11,4 @@ if __name__ == "__main__":
     # RC f16
     f16 = mmoi("RC_F16_original.json")
     f16.get_mass_properties(report=True)
-    f16.visualize()
+    # f16.visualize()
