@@ -1,0 +1,413 @@
+{
+    "components" : {
+        "cone" : {
+            "ID" : 1,
+            "density" : 0.0044475995,
+            "type" : "half_cylinder",
+            "connect_to" : {
+                "dx" :  -6.78,
+                "dz" :  0
+            },
+            "orientation" : [-90.0,0.0,0.0],
+            "base_outer_semi_y_axis" : 2.625,
+            "base_outer_semi_z_axis" : 2.625,
+            "base_inner_semi_y_axis" : 0,
+            "base_inner_semi_z_axis" : 0,
+            "top_outer_semi_y_axis" : 0,
+            "top_outer_semi_z_axis" : 0,
+            "top_inner_semi_y_axis" : 0,
+            "top_inner_semi_z_axis" : 0,
+            "length" : 6.78
+        },
+        "battery" : {
+            "ID" : 24,
+            "density" : 0.09596,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -14.6,
+                "dy" :  0,
+                "dz" :  -1.025
+            },
+            "x_length" : 6.3,
+            "y_length" : 1.7,
+            "z_length" : 1.6
+        }
+    },
+    "notes" : "bire servos are 80 ish grams, located as in picture, no dihedral in tail",
+    "to_add" : {
+        "fuselage_Main" : {
+            "ID" : 2,
+            "density" : 0.0044475995,
+            "type" : "cylinder",
+            "connect_to" : {
+                "dx" :  -6.78,
+                "dz" :  0
+            },
+            "orientation" : [0.0,0.0,180.0],
+            "base_outer_semi_y_axis" : 2.625,
+            "base_outer_semi_z_axis" : 2.625,
+            "base_inner_semi_y_axis" : 0,
+            "base_inner_semi_z_axis" : 0,
+            "top_outer_semi_y_axis" : 2.625,
+            "top_outer_semi_z_axis" : 2.625,
+            "top_inner_semi_y_axis" : 0,
+            "top_inner_semi_z_axis" : 0,
+            "length" : 43.44
+        },
+        "neg_intake" : {
+            "ID" : 3,
+            "density" : 0.0044475995,
+            "type" : "half_cylinder",
+            "connect_to" : {
+                "dx" :  -6.78,
+                "dz" :  0
+            },
+            "orientation" : [-90.0,0.0,0.0],
+            "base_outer_semi_y_axis" : -2.625,
+            "base_outer_semi_z_axis" : -2.625,
+            "base_inner_semi_y_axis" : 0,
+            "base_inner_semi_z_axis" : 0,
+            "top_outer_semi_y_axis" : -2.625,
+            "top_outer_semi_z_axis" : -2.625,
+            "top_inner_semi_y_axis" : 0,
+            "top_inner_semi_z_axis" : 0,
+            "length" : -8.25
+        },
+        "L_fuselage_side" : {
+            "ID" : 4,
+            "density" : 0.0044475995,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -33.72,
+                "dy" :  -3.375,
+                "dz" :  0
+            },
+            "x_length" : 33,
+            "y_length" : 1.5,
+            "z_length" : 1.5
+        },  
+        "R_fuselage_side" : {
+            "ID" : 5,
+            "density" : 0.0044475995,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -33.72,
+                "dy" :  3.375,
+                "dz" :  0
+            },
+            "x_length" : 33,
+            "y_length" : 1.5,
+            "z_length" : 1.5
+        },
+        "exhaust" : {
+            "ID" : 6,
+            "density" : 0.0044475995,
+            "type" : "cylinder",
+            "connect_to" : {
+                "dx" :  -50.22,
+                "dz" :  0
+            },
+            "orientation" : [0.0,0.0,180.0],
+            "base_outer_semi_y_axis" : 2.625,
+            "base_outer_semi_z_axis" : 2.625,
+            "base_inner_semi_y_axis" : 1.75,
+            "base_inner_semi_z_axis" : 1.75,
+            "top_outer_semi_y_axis" : 1.63,
+            "top_outer_semi_z_axis" : 1.63,
+            "top_inner_semi_z_axis" : 1.5,
+            "top_inner_semi_y_axis" : 1.5,
+            "length" : 3.3
+        },
+        "canopy" : {
+            "ID" : 7,
+            "density" : 0.0044475995,
+            "type" : "half_cylinder",
+            "connect_to" : {
+                "dx" :  -21.7,
+                "dz" :  -1.91066
+            },
+            "orientation" : [-90.0,0.0,0.0],
+            "base_outer_semi_y_axis" : 1.8,
+            "base_outer_semi_z_axis" : 1.8,
+            "base_inner_semi_y_axis" : 0,
+            "base_inner_semi_z_axis" : 0,
+            "top_outer_semi_y_axis" : 1.8,
+            "top_outer_semi_z_axis" : 1.8,
+            "top_inner_semi_y_axis" : 0,
+            "top_inner_semi_z_axis" : 0,
+            "length" : 12
+        },
+        "l_main_wing" : {
+            "ID" : 8,
+            "density": 0.0044475995,
+            "type" : "symmetric_airfoil",
+            "side" : "left",
+            "connect_to" : {
+                "dx" :  -28.81555,
+                "dy" :  -4.125,
+                "dz" :  0
+            },
+            "semispan" : 14.04,
+            "sweep" : 26.9842,
+            "chord" : [ [0.0, 14.7022],
+                        [1.0, 5.16]],
+            "thickness" : [ [0.0, 0.0717164778],
+                            [1.0, 0.1027132]]
+        },
+        "r_main_wing" : {
+            "ID" : 9,
+            "density": 0.0044475995,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "connect_to" : {
+                "dx" :  -28.81555,
+                "dy" :  4.125,
+                "dz" :  0
+            },
+            "semispan" : 14.04,
+            "sweep" : 26.9842,
+            "chord" : [ [0.0, 14.7022],
+                        [1.0, 5.16]],
+            "thickness" : [ [0.0, 0.0717164778],
+                            [1.0, 0.1027132]]
+        },
+        "l_stab" : {
+            "ID" : 10,
+            "density": 0.0044475995,
+            "type" : "symmetric_airfoil",
+            "side" : "left",
+            "connect_to" : {
+                "dx" :  -46.737,
+                "dy" :  -4.125,
+                "dz" :  0
+            },
+            "semispan" : 7.08,
+            "sweep" : 31.60974,
+            "chord" : [ [0.0, 9.3],
+                        [1.0, 3.5]],
+            "thickness" : [ [0.0, 0.0784946],
+                            [1.0, 0.0942857]],
+            "dihedral": -8.78
+        },
+        "r_stab" : {
+            "ID" : 11,
+            "density": 0.0044475995,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "connect_to" : {
+                    "dx" :  -46.737,
+                    "dy" :  4.125,
+                    "dz" :  0
+            },
+            "semispan" : 7.08,
+            "sweep" : 31.60974,
+            "chord" : [ [0.0, 9.3],
+                        [1.0, 3.5]],
+            "thickness" : [ [0.0, 0.0784946],
+                            [1.0, 0.0942857]],
+            "dihedral": -8.78
+        },
+        "v_base" : {
+            "ID" : 12,
+            "density": 0.0044475995,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "connect_to" : {
+                "dx" :  -36.93,
+                "dy" :  0,
+                "dz" :  -2.625
+            },
+            "semispan" : 1.92,
+            "sweep" : 74.44706755,
+            "chord" : [ [0.0, 19.38],
+                        [1.0, 10.18]],
+            "thickness" : [ [0.0, 0.049536],
+                            [1.0, 0.070727]],
+            "dihedral": 90
+        },
+        "v_main" : {
+            "ID" : 13,
+            "density": 0.0044475995,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "connect_to" : {
+                "dx" :  -44.03,
+                "dy" :  0,
+                "dz" :  -4.545
+            },
+            "semispan" : 7.92,
+            "sweep" : 41.93471582,
+            "chord" : [ [0.0, 10.18],
+                        [1.0, 4.5]],
+            "thickness" : [ [0.0, 0.070727],
+                            [1.0, 0.106667]],
+            "dihedral": 90.0
+        },
+        "ventral_L" : {
+            "ID" : 14,
+            "density": 0.0044475995,
+            "type" : "symmetric_airfoil",
+            "side" : "left",
+            "connect_to" : {
+                "dx" :  -41.02,
+                "dy" :  -1.33,
+                "dz" :  2.2897
+            },
+            "semispan" : 2.233,
+            "sweep" : 19.53951477,
+            "chord" : [ [0.0, 5.2],
+                        [1.0, 3.86]],
+            "thickness" : [ [0.0, 0.083],
+                            [1.0, 0.065]],
+            "dihedral": -70
+        },
+        "ventral_R" : {
+            "ID" : 15,
+            "density": 0.0044475995,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "connect_to" : {
+                "dx" :  -41.02,
+                "dy" :  1.33,
+                "dz" :  2.2897
+            },
+            "semispan" : 2.233,
+            "sweep" : 19.53951477,
+            "chord" : [ [0.0, 5.2],
+                        [1.0, 3.86]],
+            "thickness" : [ [0.0, 0.083],
+                            [1.0, 0.065]],
+            "dihedral": -70
+        },
+        "thrust_Tube" : {
+            "ID" : 16,
+            "density" : 0.0044475995,
+            "type" : "cylinder",
+            "connect_to" : {
+                "dx" :  -50.22,
+                "dz" :  0
+                },
+            "orientation" : [0.0,0.0,180.0],
+            "base_outer_semi_y_axis" : -1.75,
+            "base_outer_semi_z_axis" : -1.75,
+            "base_inner_semi_y_axis" : 0,
+            "base_inner_semi_z_axis" : 0,
+            "top_outer_semi_y_axis" : -1.75,
+            "top_outer_semi_z_axis" : -1.75,
+            "top_inner_semi_z_axis" : 0,
+            "top_inner_semi_y_axis" : 0,
+            "length" : -15.84
+        },
+        "prop_hub" : {
+            "ID" : 17,
+            "density" : 0.0905705947,
+            "type" : "half_ellipsoid",
+            "connect_to" : {
+                "dx" :  -42.26,
+                "dz" :  0
+                },
+            "orientation" : [0.0,0.0,0.0],
+            "outer_semi_x_axis" : 0.67,
+            "outer_semi_y_axis" : 0.67,
+            "outer_semi_z_axis" : 0.67,
+            "inner_semi_x_axis" : 0.61,
+            "inner_semi_y_axis" : 0.61,
+            "inner_semi_z_axis" : 0.61
+        },
+        "motor" : {
+            "ID" : 18,
+            "density" : 0.157927,
+            "type" : "cylinder",
+            "connect_to" : {
+                "dx" :  -45.633,
+                "dz" :  0
+                },
+            "orientation" : [0.0,0.0,0.0],
+            "base_outer_semi_y_axis" : 0.63,
+            "base_outer_semi_z_axis" : 0.63,
+            "base_inner_semi_y_axis" : 0,
+            "base_inner_semi_z_axis" : 0,
+            "top_outer_semi_y_axis" : 0.63,
+            "top_outer_semi_z_axis" : 0.63,
+            "top_inner_semi_z_axis" : 0,
+            "top_inner_semi_y_axis" : 0,
+            "length" : 2.63
+        },
+        "fan_housing" : {
+            "ID" : 19,
+            "density" : 0.050185,
+            "type" : "cylinder",
+            "connect_to" : {
+                "dx" :  -44.61,
+                "dz" :  0
+                },
+            "orientation" : [0.0,0.0,0.0],
+            "base_outer_semi_y_axis" : 1.675,
+            "base_outer_semi_z_axis" : 1.675,
+            "base_inner_semi_y_axis" : 1.575,
+            "base_inner_semi_z_axis" : 1.575,
+            "top_outer_semi_y_axis" : 1.675,
+            "top_outer_semi_z_axis" : 1.675,
+            "top_inner_semi_z_axis" : 1.575,
+            "top_inner_semi_y_axis" : 1.575,
+            "length" : 2.65
+        },
+        "arm_mount_L" : {
+            "ID" : 20,
+            "density" : 0.0044475995,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -35.5399,
+                "dy" :  -18.415,
+                "dz" :  0
+            },
+            "x_length" : 9.88,
+            "y_length" : 0.5,
+            "z_length" : 0.63
+        },
+        "arm_mount_R" : {
+            "ID" : 21,
+            "density" : 0.0044475995,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -35.5399,
+                "dy" :  18.415,
+                "dz" :  0
+            },
+            "x_length" : 9.88,
+            "y_length" : 0.5,
+            "z_length" : 0.63
+        },
+        "neg_Bay" : {
+            "ID" : 22,
+            "density" : 0.0044475995,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -15.7,
+                "dy" :  0,
+                "dz" :  -1.06783
+            },
+            "x_length" : -12,
+            "y_length" : -3.6,
+            "z_length" : -1.68566
+        },
+        "fan" : {
+            "ID" : 23,
+            "density" : 0.039189189,
+            "type" : "rotor",
+            "connect_to" : {
+                "dx" :  -42.26,
+                "dy" :  0,
+                "dz" :  0
+            },
+            "number_of_blades" : 12,
+            "diameter_hub" : 1.375,
+            "diameter_rotor" : 3.125,
+            "rotation_rate" : 4151.09109294,
+            "chord" : [ [0.0, 0.7655],
+                        [1.0, 0.6325]],
+            "thickness" : [ [0.0, 0.127368],
+                            [1.0, 0.116206]]
+        }
+    }
+}

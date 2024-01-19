@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?application progid="SMath Studio Cloud" version="1.0.8348.30405"?>
+<worksheet xmlns="http://smath.info/schemas/worksheet/1.0">
+  <settings ppi="96">
+    <identity>
+      <id>04b2d010-40e2-484f-8e75-4b301a672ca2</id>
+      <revision>20</revision>
+    </identity>
+    <calculation>
+      <precision>4</precision>
+      <exponentialThreshold>5</exponentialThreshold>
+      <trailingZeros>false</trailingZeros>
+      <significantDigitsMode>false</significantDigitsMode>
+      <roundingMode>0</roundingMode>
+      <approximateEqualAccuracy>0</approximateEqualAccuracy>
+      <fractions>decimal</fractions>
+    </calculation>
+    <pageModel active="false" viewMode="2" printGrid="false" printAreas="true" simpleEqualsOnly="false" printBackgroundImages="true">
+      <paper id="0" orientation="Portrait" width="850" height="1100" />
+      <margins left="39" right="39" top="49" bottom="49" />
+      <header alignment="Center" color="#a9a9a9">&amp;[DATE] &amp;[TIME] - &amp;[FILENAME]</header>
+      <footer alignment="Center" color="#a9a9a9">&amp;[PAGENUM] / &amp;[COUNT]</footer>
+      <backgrounds />
+    </pageModel>
+    <dependencies>
+      <assembly name="SMath Studio Cloud" version="1.0.8348.30405" guid="a37cba83-b69c-4c71-9992-55ff666763bd" />
+      <assembly name="MathRegion" version="1.11.8348.30405" guid="02f1ab51-215b-466e-a74d-5d8b1cf85e8d" />
+      <assembly name="TextRegion" version="1.11.8348.30405" guid="485d28c5-349a-48b6-93be-12a35a1c1e39" />
+    </dependencies>
+  </settings>
+  <regions type="content">
+    <region left="927" top="144" width="649" height="98" color="#000000" fontSize="20">
+      <math decimalPlaces="15">
+        <input>
+          <e type="operand">0.0044475995</e>
+          <e type="operand" style="unit">lbm</e>
+          <e type="operand" style="unit">in</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+          <e type="operator" args="2">*</e>
+        </input>
+        <contract>
+          <e type="operand" style="unit">slug</e>
+          <e type="operand" style="unit">ft</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+        </contract>
+        <result action="numeric">
+          <e type="operand">0.238871148668791</e>
+        </result>
+      </math>
+    </region>
+    <region left="792" top="162" width="73" height="38" color="#000000" fontSize="20">
+      <text lang="eng" fontFamily="Arial" fontSize="10">
+        <content>
+          <p style="font-size: 20px;">foam</p>
+        </content>
+      </text>
+    </region>
+    <region left="936" top="261" width="553" height="98" color="#000000" fontSize="20">
+      <math decimalPlaces="15">
+        <input>
+          <e type="operand">0.09596</e>
+          <e type="operand" style="unit">lbm</e>
+          <e type="operand" style="unit">in</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+          <e type="operator" args="2">*</e>
+        </input>
+        <contract>
+          <e type="operand" style="unit">slug</e>
+          <e type="operand" style="unit">ft</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+        </contract>
+        <result action="numeric">
+          <e type="operand">5.15380834678508</e>
+        </result>
+      </math>
+    </region>
+    <region left="801" top="279" width="96" height="38" color="#000000" fontSize="20">
+      <text lang="eng" fontFamily="Arial" fontSize="10">
+        <content>
+          <p style="font-size: 20px;">battery</p>
+        </content>
+      </text>
+    </region>
+  </regions>
+</worksheet>

@@ -190,7 +190,7 @@ class AircraftSystem:
 
 
     def report_as_SolidWorks_report(self,info,positive_tensor=True,
-        use_Lanham=False,name="",report_units=False):
+        use_Lanham=False,name="",report_units=False,mx=1.0,lx=1.0):
         """Method which reports the mass and inertia properties as given in 
         SolidWorks.
         
@@ -227,7 +227,7 @@ class AircraftSystem:
 
         if report_units: units = " slugs"
         else: units = ""
-        print(intro+"Mass = {:> 10.8f}{}".format(info["mass"],units))
+        print(intro+"Mass = {:> 10.8f}{}".format(info["mass"]*mx,units))
         print()
 
         if report_units: units = " cubic feet"
@@ -291,7 +291,7 @@ class AircraftSystem:
         print((symbol * 50)[:-3])
 
 
-    def get_mass_properties(self,report=False,individual=False,use_Lanham=False,positive_tensor=True):
+    def get_mass_properties(self,report=False,individual=False,use_Lanham=False,positive_tensor=True,mass_multiplier=1.0,length_multiplier=1.0):
 
         # determine properties of each component
         for i in self.components:
@@ -387,10 +387,10 @@ class AircraftSystem:
         if report:
             print("TOTAL")
             self.report_as_SolidWorks_report(self.properties_dict,\
-                positive_tensor)
+                positive_tensor,mx=mass_multiplier,lx=length_multiplier)
             if use_Lanham:
                 self.report_as_SolidWorks_report(lanham,positive_tensor,\
-                    use_Lanham)
+                    use_Lanham,mx=mass_multiplier,lx=length_multiplier)
             if individual:
                 print("\nINDIVIDUAL")
                 for i in self.components:
@@ -409,14 +409,14 @@ class AircraftSystem:
                         info["inertia_tensor"] = \
                             shifted_dic2["inertia_tensor"]
                         name = self.components[i].name
-                        self.report_as_SolidWorks_report(info,positive_tensor,False,name)
+                        self.report_as_SolidWorks_report(info,positive_tensor,False,name,mx=mass_multiplier,lx=length_multiplier)
                         if use_Lanham:
                             info = self.components[i].shift_properties_to_location(\
                                 self.cg_location_lanham,True)
                             info["origin_inertia_tensor"] = \
                                 self.components[i].shift_properties_to_location(\
                                 np.zeros((3,1)),True)["inertia_tensor"]
-                            self.report_as_SolidWorks_report(info,positive_tensor,use_Lanham,name)
+                            self.report_as_SolidWorks_report(info,positive_tensor,use_Lanham,name,mx=mass_multiplier,lx=length_multiplier)
         
         if use_Lanham:
             return self.properties_dict, lanham
@@ -424,7 +424,7 @@ class AircraftSystem:
             return self.properties_dict
 
 
-    def get_mass_properties_about_point(self,point,report=False,individual=False,positive_tensor=True):
+    def get_mass_properties_about_point(self,point,report=False,individual=False,positive_tensor=True,mass_multiplier=1.0,length_multiplier=1.0):
 
         # determine properties of each component
         for i in self.components:
@@ -468,7 +468,7 @@ class AircraftSystem:
         if report:
             print("TOTAL")
             self.report_as_SolidWorks_report(self.properties_dict,\
-                positive_tensor)
+                positive_tensor,mx=mass_multiplier,lx=length_multiplier)
             if individual:
                 print("INDIVIDUAL")
                 for i in self.components:
@@ -478,7 +478,7 @@ class AircraftSystem:
                             self.components[i].shift_properties_to_location(\
                             np.zeros((3,1)))["inertia_tensor"]
                         name = self.components[i].name
-                        self.report_as_SolidWorks_report(info,positive_tensor,name)
+                        self.report_as_SolidWorks_report(info,positive_tensor,name,mx=mass_multiplier,lx=length_multiplier)
         
         return self.properties_dict
 
