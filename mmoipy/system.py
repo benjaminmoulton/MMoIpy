@@ -24,7 +24,8 @@ class AircraftSystem:
     def __init__(self,input_vars={},verbose=True):
 
         # print cool logo
-        print("""                                                               
+        if verbose:
+            print("""                                                               
         _|      _|  _|      _|            _|_|_|                      
         _|_|  _|_|  _|_|  _|_|    _|_|      _|    _|_|_|    _|    _|  
         _|  _|  _|  _|  _|  _|  _|    _|    _|    _|    _|  _|    _|  
@@ -246,9 +247,9 @@ class AircraftSystem:
         if report_units: units = " (slugs * square feet / seconds)"
         else: units = ""
         print(intro+"Angular momentum:{}".format(units))
-        print("\tX = {:> 14.8f}".format(info["angular_momentum"][0,0]*mx/lx**2))
-        print("\tY = {:> 14.8f}".format(info["angular_momentum"][1,0]*mx/lx**2))
-        print("\tZ = {:> 14.8f}".format(info["angular_momentum"][2,0]*mx/lx**2))
+        print("\tX = {:> 14.8f}".format(info["angular_momentum"][0,0]*mx*lx**2))
+        print("\tY = {:> 14.8f}".format(info["angular_momentum"][1,0]*mx*lx**2))
+        print("\tZ = {:> 14.8f}".format(info["angular_momentum"][2,0]*mx*lx**2))
         print()
         
         I = info["inertia_tensor"] * 1.0
@@ -317,14 +318,16 @@ class AircraftSystem:
         for i in self.components:
             self.cg_location += self.components[i].mass * \
                 self.components[i].get_cg_location()
-        self.cg_location /= self.mass
+        if self.mass != 0.0:
+            self.cg_location /= self.mass
         
         # determine lanham cg location
         self.cg_location_lanham = np.zeros((3,1))
         for i in self.components:
             self.cg_location_lanham += self.components[i].get_mass(True) * \
                 self.components[i].get_cg_location(True)
-        self.cg_location_lanham /= self.mass_lanham
+        if self.mass_lanham != 0.0:
+            self.cg_location_lanham /= self.mass_lanham
         
         # determine total angular momentum
         self.angular_momentum = 0.0
@@ -846,8 +849,8 @@ class AircraftSystem:
         return [rtu,rtl,ttu,ttl,lel,tel,upl,lol],None
 
 
-    def visualize(self,no_color=False,show_legend=False,plot_ids=None,
-    filename=None):
+    def visualize(self,no_color=False,show_legend=False,show_cg=True,
+    view=(30.,-140),plot_ids=None,filename=None):
         # initialize plot
         fig = plt.figure()
         ax = fig.add_subplot(111,projection='3d')
@@ -855,6 +858,11 @@ class AircraftSystem:
         # which ids to plot, or all
         if plot_ids == None:
             plot_ids = self.components.keys()
+        
+        # show cg location
+        if show_cg:
+            cg = self.get_mass_properties()["cg_location"]
+            ax.plot(cg[0],cg[1],cg[2],c="#00b1b3",marker="o",ms=5.0,label="CG")
         
 
         # calculate component lines, plot
@@ -1010,7 +1018,7 @@ class AircraftSystem:
         ax.zaxis.set_pane_color(white)
         plt.tight_layout()
         # ax.invert_xaxis()
-        ax.view_init(30.,-140)
+        ax.view_init(view[0],view[1])
         if show_legend:
             ax.legend()
 

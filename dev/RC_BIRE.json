@@ -160,29 +160,29 @@
             "top_inner_semi_z_axis" : 0,
             "length" : 0.6875
         },
-        "L_fuselage_side" : {
+        "L_fuselage_side_front" : {
             "ID" : 4,
             "density" : 0.238871148668791,
             "type" : "cuboid",
             "connect_to" : {
-                "dx" :  -2.81,
+                "dx" :  -2.526333333333333,
                 "dy" :  -0.28125,
                 "dz" :  0
             },
-            "x_length" : 2.75,
+            "x_length" : 2.182666666666666,
             "y_length" : 0.125,
             "z_length" : 0.125
         },
-        "R_fuselage_side" : {
+        "R_fuselage_side_front" : {
             "ID" : 5,
             "density" : 0.238871148668791,
             "type" : "cuboid",
             "connect_to" : {
-                "dx" :  -2.81,
+                "dx" :  -2.526333333333333,
                 "dy" :  0.28125,
                 "dz" :  0
             },
-            "x_length" : 2.75,
+            "x_length" : 2.182666666666666,
             "y_length" : 0.125,
             "z_length" : 0.125
         },
@@ -274,7 +274,7 @@
                         [1.0, 0.2916666666666667]],
             "thickness" : [ [0.0, 0.0784946],
                             [1.0, 0.0942857]],
-            "dihedral": -8.78
+            "no_dihedral": -8.78
         },
         "r_stab" : {
             "ID" : 11,
@@ -292,11 +292,40 @@
                         [1.0, 0.2916666666666667]],
             "thickness" : [ [0.0, 0.0784946],
                             [1.0, 0.0942857]],
-            "dihedral": -8.78
+            "no_dihedral": -8.78
         },
-        "v_base" : {
+        "L_fuselage_side_aft" : {
+            "ID" : 25,
+            "density" : 0.238871148668791,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -3.9013333333333335,
+                "dy" :  -0.28125,
+                "dz" :  0
+            },
+            "x_length" : 0.5673333333333339,
+            "y_length" : 0.125,
+            "z_length" : 0.125
+        },
+        "R_fuselage_side_aft" : {
+            "ID" : 26,
+            "density" : 0.238871148668791,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -3.9013333333333335,
+                "dy" :  0.28125,
+                "dz" :  0
+            },
+            "x_length" : 0.5673333333333339,
+            "y_length" : 0.125,
+            "z_length" : 0.125
+        },
+        "v_base_carbon_fiber" : {
             "ID" : 12,
-            "density": 0.238871148668791,
+            "density_old": 0.238871148668791,
+            "density_carbon_fiber": 3.00749651456855,
+            "density_cf_halved" : 1.50374825728428,
+            "density" : 1.50374825728428,
             "type" : "symmetric_airfoil",
             "side" : "right",
             "connect_to" : {
@@ -311,60 +340,6 @@
             "thickness" : [ [0.0, 0.049536],
                             [1.0, 0.070727]],
             "dihedral": 90
-        },
-        "v_main" : {
-            "ID" : 13,
-            "density": 0.238871148668791,
-            "type" : "symmetric_airfoil",
-            "side" : "right",
-            "connect_to" : {
-                "dx" :  -3.669166666666667,
-                "dy" :  0,
-                "dz" :  -0.37875
-            },
-            "semispan" : 0.66,
-            "sweep" : 41.93471582,
-            "chord" : [ [0.0, 0.8483333333333333],
-                        [1.0, 0.375]],
-            "thickness" : [ [0.0, 0.070727],
-                            [1.0, 0.106667]],
-            "dihedral": 90.0
-        },
-        "ventral_L" : {
-            "ID" : 14,
-            "density": 0.238871148668791,
-            "type" : "symmetric_airfoil",
-            "side" : "left",
-            "connect_to" : {
-                "dx" :  -3.4183333333333334,
-                "dy" :  -0.11083333333333334,
-                "dz" :  0.19080833333333333
-            },
-            "semispan" : 0.18608333333333335,
-            "sweep" : 19.53951477,
-            "chord" : [ [0.0, 0.43333333333333335],
-                        [1.0, 0.32166666666666666]],
-            "thickness" : [ [0.0, 0.083],
-                            [1.0, 0.065]],
-            "dihedral": -70
-        },
-        "ventral_R" : {
-            "ID" : 15,
-            "density": 0.238871148668791,
-            "type" : "symmetric_airfoil",
-            "side" : "right",
-            "connect_to" : {
-                "dx" :  -3.4183333333333334,
-                "dy" :  0.11083333333333334,
-                "dz" :  0.19080833333333333
-            },
-            "semispan" : 0.18608333333333335,
-            "sweep" : 19.53951477,
-            "chord" : [ [0.0, 0.43333333333333335],
-                        [1.0, 0.32166666666666666]],
-            "thickness" : [ [0.0, 0.083],
-                            [1.0, 0.065]],
-            "dihedral": -70
         },
         "thrust_Tube" : {
             "ID" : 16,
@@ -439,32 +414,6 @@
             "top_inner_semi_y_axis" : 0.13125,
             "length" : 0.22083333333333333
         },
-        "arm_mount_L" : {
-            "ID" : 20,
-            "density" : 0.238871148668791,
-            "type" : "cuboid",
-            "connect_to" : {
-                "dx" :  -2.9616583333333337,
-                "dy" :  -1.5345833333333332,
-                "dz" :  0.0
-            },
-            "x_length" : 0.8233333333333334,
-            "y_length" : 0.041666666666666664,
-            "z_length" : 0.0525
-        },
-        "arm_mount_R" : {
-            "ID" : 21,
-            "density" : 0.238871148668791,
-            "type" : "cuboid",
-            "connect_to" : {
-                "dx" :  -2.9616583333333337,
-                "dy" :  1.5345833333333332,
-                "dz" :  0.0
-            },
-            "x_length" : 0.8233333333333334,
-            "y_length" : 0.041666666666666664,
-            "z_length" : 0.0525
-        },
         "neg_Bay" : {
             "ID" : 22,
             "density" : -0.238871148668791,
@@ -509,6 +458,114 @@
             "x_length" : 0.525,
             "y_length" : 0.1416666666666667,
             "z_length" : 0.1333333333333333
+        },
+        "vstab_servo" : {
+            "ID" : 27,
+            "density" : 2.5259850832404,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -1.4791666666666667,
+                "dy" :  0.0,
+                "dz" :  -0.0854166666666667
+            },
+            "x_length" : 0.1666666666666667,
+            "y_length" : 0.0625,
+            "z_length" : 0.2083333333333333
+        },
+        "BIRE_servo" : {
+            "ID" : 28,
+            "density" : 2.5259850832404,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -1.3645833333333335,
+                "dy" :  0.0,
+                "dz" :  -0.0854166666666667
+            },
+            "x_length" : 0.0625,
+            "y_length" : 0.1666666666666667,
+            "z_length" : 0.2083333333333333
+        }
+    },
+    "removed" : {
+        "ventral_L" : {
+            "ID" : 14,
+            "density": 0.238871148668791,
+            "type" : "symmetric_airfoil",
+            "side" : "left",
+            "connect_to" : {
+                "dx" :  -3.4183333333333334,
+                "dy" :  -0.11083333333333334,
+                "dz" :  0.19080833333333333
+            },
+            "semispan" : 0.18608333333333335,
+            "sweep" : 19.53951477,
+            "chord" : [ [0.0, 0.43333333333333335],
+                        [1.0, 0.32166666666666666]],
+            "thickness" : [ [0.0, 0.083],
+                            [1.0, 0.065]],
+            "dihedral": -70
+        },
+        "ventral_R" : {
+            "ID" : 15,
+            "density": 0.238871148668791,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "connect_to" : {
+                "dx" :  -3.4183333333333334,
+                "dy" :  0.11083333333333334,
+                "dz" :  0.19080833333333333
+            },
+            "semispan" : 0.18608333333333335,
+            "sweep" : 19.53951477,
+            "chord" : [ [0.0, 0.43333333333333335],
+                        [1.0, 0.32166666666666666]],
+            "thickness" : [ [0.0, 0.083],
+                            [1.0, 0.065]],
+            "dihedral": -70
+        },
+        "arm_mount_L" : {
+            "ID" : 20,
+            "density" : 0.238871148668791,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -2.9616583333333337,
+                "dy" :  -1.5345833333333332,
+                "dz" :  0.0
+            },
+            "x_length" : 0.8233333333333334,
+            "y_length" : 0.041666666666666664,
+            "z_length" : 0.0525
+        },
+        "arm_mount_R" : {
+            "ID" : 21,
+            "density" : 0.238871148668791,
+            "type" : "cuboid",
+            "connect_to" : {
+                "dx" :  -2.9616583333333337,
+                "dy" :  1.5345833333333332,
+                "dz" :  0.0
+            },
+            "x_length" : 0.8233333333333334,
+            "y_length" : 0.041666666666666664,
+            "z_length" : 0.0525
+        },
+        "v_main" : {
+            "ID" : 13,
+            "density": 0.238871148668791,
+            "type" : "symmetric_airfoil",
+            "side" : "right",
+            "connect_to" : {
+                "dx" :  -3.669166666666667,
+                "dy" :  0,
+                "dz" :  -0.37875
+            },
+            "semispan" : 0.66,
+            "sweep" : 41.93471582,
+            "chord" : [ [0.0, 0.8483333333333333],
+                        [1.0, 0.375]],
+            "thickness" : [ [0.0, 0.070727],
+                            [1.0, 0.106667]],
+            "dihedral": 90.0
         }
     },
     "notes" : "bire servos are 80 ish grams, located as in picture, no dihedral in tail",

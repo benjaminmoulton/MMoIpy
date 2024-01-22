@@ -4,7 +4,7 @@
   <settings ppi="96">
     <identity>
       <id>04b2d010-40e2-484f-8e75-4b301a672ca2</id>
-      <revision>20</revision>
+      <revision>35</revision>
     </identity>
     <calculation>
       <precision>4</precision>
@@ -86,6 +86,126 @@
       <text lang="eng" fontFamily="Arial" fontSize="10">
         <content>
           <p style="font-size: 20px;">battery</p>
+        </content>
+      </text>
+    </region>
+    <region left="945" top="414" width="633" height="98" color="#000000" fontSize="20">
+      <math decimalPlaces="15">
+        <input>
+          <e type="operand">0.0905705947</e>
+          <e type="operand" style="unit">lbm</e>
+          <e type="operand" style="unit">in</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+          <e type="operator" args="2">*</e>
+        </input>
+        <contract>
+          <e type="operand" style="unit">slug</e>
+          <e type="operand" style="unit">ft</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+        </contract>
+        <result action="numeric">
+          <e type="operand">4.86435480344048</e>
+        </result>
+      </math>
+    </region>
+    <region left="801" top="423" width="119" height="38" color="#000000" fontSize="20" isBreakable="false">
+      <text lang="eng" fontFamily="Arial" fontSize="10">
+        <content>
+          <p style="font-size: 20px;">prop hub</p>
+        </content>
+      </text>
+    </region>
+    <region left="927" top="549" width="569" height="98" color="#000000" fontSize="20">
+      <math decimalPlaces="15">
+        <input>
+          <e type="operand">0.157927</e>
+          <e type="operand" style="unit">lbm</e>
+          <e type="operand" style="unit">in</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+          <e type="operator" args="2">*</e>
+        </input>
+        <contract>
+          <e type="operand" style="unit">slug</e>
+          <e type="operand" style="unit">ft</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+        </contract>
+        <result action="numeric">
+          <e type="operand">8.48192466426352</e>
+        </result>
+      </math>
+    </region>
+    <region left="783" top="558" width="82" height="38" color="#000000" fontSize="20" isBreakable="false">
+      <text lang="eng" fontFamily="Arial" fontSize="10">
+        <content>
+          <p style="font-size: 20px;">motor</p>
+        </content>
+      </text>
+    </region>
+    <region left="936" top="666" width="569" height="98" color="#000000" fontSize="20">
+      <math decimalPlaces="15">
+        <input>
+          <e type="operand">0.050185</e>
+          <e type="operand" style="unit">lbm</e>
+          <e type="operand" style="unit">in</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+          <e type="operator" args="2">*</e>
+        </input>
+        <contract>
+          <e type="operand" style="unit">slug</e>
+          <e type="operand" style="unit">ft</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+        </contract>
+        <result action="numeric">
+          <e type="operand">2.69533005297425</e>
+        </result>
+      </math>
+    </region>
+    <region left="792" top="675" width="152" height="38" color="#000000" fontSize="20" isBreakable="false">
+      <text lang="eng" fontFamily="Arial" fontSize="10">
+        <content>
+          <p style="font-size: 20px;">fan housing</p>
+        </content>
+      </text>
+    </region>
+    <region left="963" top="801" width="617" height="98" color="#000000" fontSize="20">
+      <math decimalPlaces="15">
+        <input>
+          <e type="operand">0.039189189</e>
+          <e type="operand" style="unit">lbm</e>
+          <e type="operand" style="unit">in</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+          <e type="operator" args="2">*</e>
+        </input>
+        <contract>
+          <e type="operand" style="unit">slug</e>
+          <e type="operand" style="unit">ft</e>
+          <e type="operand">3</e>
+          <e type="operator" args="2">^</e>
+          <e type="operator" args="2">/</e>
+        </contract>
+        <result action="numeric">
+          <e type="operand">2.10476833443037</e>
+        </result>
+      </math>
+    </region>
+    <region left="846" top="819" width="51" height="38" color="#000000" fontSize="20" isBreakable="false">
+      <text lang="eng" fontFamily="Arial" fontSize="10">
+        <content>
+          <p style="font-size: 20px;">fan</p>
         </content>
       </text>
     </region>
