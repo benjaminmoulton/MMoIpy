@@ -30,10 +30,14 @@ if __name__ == "__main__":
     lan_wing = {**sym_wing}
     lan_wing["ID"] = 2
     lan_wing["type"] = "lanham_wing"
+    prm_wing = {**sym_wing}
+    prm_wing["ID"] = 3
+    prm_wing["type"] = "prismoid"
     inp_dict = {
         "components" : {
             "sym" : sym_wing,
-            "lan" : lan_wing
+            "lan" : lan_wing,
+            # "prsm" : prm_wing
         }
     }
 

@@ -31,7 +31,7 @@ if __name__ == "__main__":
     # RC BIRE
     bire = mmoi("RC_BIRE.json")
     bire.get_mass_properties(report=True)#,individual=True)#,mass_multiplier=32.1740485564305,length_multiplier=12.)#,individual=True)
-    # bire.visualize()
+    # bire.visualize(view=(90.0,0.0))
     # # RC BIRE
     # bise = mmoi("RC_BIRE_stab_extended.json")
     # bise.get_mass_properties(report=True)#,individual=True)#,mass_multiplier=32.1740485564305,length_multiplier=12.)#,individual=True)
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     # report
     names = ["$I_{xx_b}$","$I_{yy_b}$","$I_{zz_b}$",
     "$I_{xy_b}$","$I_{xz_b}$","$I_{yz_b}$"]
-    print("{:<10s} & {:^11s} & {:^11s} & {:^11s} & {:^11s} \\\\".format(
+    print("{:<10s} & {:^23s} & {:^23s} & {:^23s} & {:^23s} \\\\".format(
         "","A","w","phi","z"
     ))
     print("BIRE Inertia ....")
@@ -121,15 +121,15 @@ if __name__ == "__main__":
         print(("{:<10s}").format(names[j]),end="")
         for k in range(len(fits[j])):
             if k == 1:
-                print(" & {:< 11.0f}".format(fits[j][k]),end="")
+                print(" & {:< 23.0f}".format(fits[j][k]),end="")
             else:
                 if abs(fits[j][k]) <= 1e-15:
-                    print(" & {:> 11.0f}".format(fits[j][k]),end="")
+                    print(" & {:> 23.0f}".format(fits[j][k]),end="")
                 else:
                     if k == 2:
-                        print(" & {:< 11.4f}".format(fits[j][k]),end="")
+                        print(" & {:< 23.16f}".format(fits[j][k]),end="")
                     else:
-                        print(" & {:> 11.4e}".format(fits[j][k]),end="")
+                        print(" & {:> 23.16e}".format(fits[j][k]),end="")
         print(" \\\\")
     print()
 
@@ -142,9 +142,9 @@ if __name__ == "__main__":
         if j > 2:
             I = -I
         if abs(I) <= 1e-15:
-            print(" & {:> 11.0f}".format(I),end="")
+            print(" & {:> 23.0f}".format(I),end="")
         else:
-            print(" & {:> 11.4e}".format(I),end="")
+            print(" & {:> 23.16e}".format(I),end="")
         print(" \\\\")
 
 
@@ -229,19 +229,19 @@ if __name__ == "__main__":
     # 	Izx =          0.02230569	Izy =         -0.00000000	Izz =          1.68156929
 
     # =================================================================================================
-    #            &      A      &      w      &     phi     &      z      \\
+    #            &            A            &            w            &           phi           &            z            \\
     # BIRE Inertia ....
-    # $I_{xx_b}$ &           0 &  0          &           0 &  2.4600e-02 \\
-    # $I_{yy_b}$ & -1.0091e-03 &  2          &  1.5708     &  2.8387e-01 \\
-    # $I_{zz_b}$ &  1.0091e-03 &  2          &  1.5708     &  2.9999e-01 \\
-    # $I_{xy_b}$ &           0 &  0          &           0 &           0 \\
-    # $I_{xz_b}$ &           0 &  0          &           0 & -5.2991e-04 \\
-    # $I_{yz_b}$ &  1.0091e-03 &  2          &          -0 &           0 \\
+    # $I_{xx_b}$ &                       0 &  0                      &                       0 &  2.4600007389559142e-02 \\
+    # $I_{yy_b}$ & -1.0090526722410476e-03 &  2                      &  1.5707963267954252     &  2.8387398431202393e-01 \\
+    # $I_{zz_b}$ &  1.0090526722408579e-03 &  2                      &  1.5707963267950074     &  2.9998562590003647e-01 \\
+    # $I_{xy_b}$ &                       0 &  0                      &                       0 &                       0 \\
+    # $I_{xz_b}$ &                       0 &  0                      &                       0 & -5.2991145176839699e-04 \\
+    # $I_{yz_b}$ &  1.0090526722409212e-03 &  2                      &                      -0 &                       0 \\
 
     # F16  Inertia...
-    # $I_{xx_b}$ [slugs-ft$^2$] &  2.5153e-02 \\
-    # $I_{yy_b}$ [slugs-ft$^2$] &  2.6480e-01 \\
-    # $I_{zz_b}$ [slugs-ft$^2$] &  2.8231e-01 \\
-    # $I_{xy_b}$ [slugs-ft$^2$] &          -0 \\
-    # $I_{xz_b}$ [slugs-ft$^2$] & -3.9819e-04 \\
-    # $I_{yz_b}$ [slugs-ft$^2$] &           0 \\
+    # $I_{xx_b}$ [slugs-ft$^2$] &  2.5153019588823572e-02 \\
+    # $I_{yy_b}$ [slugs-ft$^2$] &  2.6480171190928720e-01 \\
+    # $I_{zz_b}$ [slugs-ft$^2$] &  2.8230872200861046e-01 \\
+    # $I_{xy_b}$ [slugs-ft$^2$] &                      -0 \\
+    # $I_{xz_b}$ [slugs-ft$^2$] & -3.9818991678568965e-04 \\
+    # $I_{yz_b}$ [slugs-ft$^2$] &                       0 \\
