@@ -93,7 +93,7 @@ class AircraftSystem:
             self.density = self.input_dict.get("density")
 
         wing_types = ["prismoid","pseudo_prismoid","symmetric_airfoil",
-        "diamond_airfoil"]
+        "diamond_airfoil","lanham_wing"]
         comp_types = ["cuboid","cylinder","half_cylinder","cylinder_old",
         "sphere","ellipsoid","half_ellipsoid","rotor"]
 
@@ -849,6 +849,40 @@ class AircraftSystem:
         return [rtu,rtl,ttu,ttl,lel,tel,upl,lol],None
 
 
+    def _build_lanham_wing(self,component):
+        # pull in components
+        cr,ct = component._cr,component._ct
+        tr,tt = component._tr,component._tt
+        b = component._b*component._delta
+
+        # create base arrays
+        num = 100
+        xa = np.linspace(0.,1.,num=num)
+        ta = 1.0 + xa*0.0
+
+        # root airfoil
+        sw = component._b*np.tan(component._Lambda)
+        zru = -tr*cr/2.
+        zrl = -zru
+        ztu = -tt*ct + zrl
+        ztl = zrl
+        rtu = np.block([ [(0.25-xa)*cr   ], [0.*xa  ], [ta*zru] ])
+        rtl = np.block([ [(0.25-xa)*cr   ], [0.*xa  ], [ta*zrl] ])
+        ttu = np.block([ [(0.25-xa)*ct-sw], [0.*xa+b], [ta*ztu] ])
+        ttl = np.block([ [(0.25-xa)*ct-sw], [0.*xa+b], [ta*ztl] ])
+        leu = np.block([ [ 0.25*cr, 0.25*ct-sw], [0.,b],[zru,ztu]])
+        lel = np.block([ [ 0.25*cr, 0.25*ct-sw], [0.,b],[zrl,ztl]])
+        teu = np.block([ [-0.75*cr,-0.75*ct-sw], [0.,b],[zru,ztu]])
+        tel = np.block([ [-0.75*cr,-0.75*ct-sw], [0.,b],[zrl,ztl]])
+        rlv = np.block([ [ 0.25*cr   ]*2, [0.]*2,[zrl,zru]])
+        rtv = np.block([ [-0.75*cr   ]*2, [0.]*2,[zrl,zru]])
+        tlv = np.block([ [ 0.25*ct-sw]*2, [ b]*2,[ztl,ztu]])
+        ttv = np.block([ [-0.75*ct-sw]*2, [ b]*2,[ztl,ztu]])
+
+
+        return [rtu,rtl,ttu,ttl,leu,lel,teu,tel,rlv,rtv,tlv,ttv],None
+
+
     def visualize(self,no_color=False,show_legend=False,show_cg=True,
     view=(30.,-140),plot_ids=None,filename=None):
         # initialize plot
@@ -878,13 +912,15 @@ class AircraftSystem:
         plottable_shapes = [
             "sphere","ellipsoid","half_ellipsoid",
             "cylinder","half_cylinder",
-            "cuboid","rotor","symmetric_airfoil","diamond_airfoil"
+            "cuboid","rotor",
+            "symmetric_airfoil","diamond_airfoil","lanham_wing"
         ]
         for i in plot_ids:
             # build object by type
             component = self.components[i]
             if component.type in plottable_shapes:
-                if component.type in ["symmetric_airfoil","diamond_airfoil"]:
+                if component.type in ["symmetric_airfoil","diamond_airfoil",
+                    "lanham_wing"]:
                     nums = len(component._components)
                 else:
                     nums = 1
@@ -913,6 +949,10 @@ class AircraftSystem:
                         lines,hlines = self._build_diamond_airfoil(
                             component._components[j])
                         R_matrix = component._components[j].R
+                    elif component.type == "lanham_wing":
+                        lines,hlines = self._build_lanham_wing(
+                            component._components[j])
+                        R_matrix = component._components[j].R
                     else:
                         lines = [[[],[],[]]]
                     
@@ -923,7 +963,8 @@ class AircraftSystem:
                         line = np.matmul(R_matrix,line)
 
                         # shift by cg location
-                        if component.type[-7:] == "airfoil":
+                        if component.type[-7:] == "airfoil" or \
+                            component.type == "lanham_wing":
                             cg = component._components[j].locations["root"]
                         elif component.type[-8:] == "cylinder" or \
                             component.type == "half_ellipsoid":

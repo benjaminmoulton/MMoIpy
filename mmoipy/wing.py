@@ -3,7 +3,8 @@ import json
 import matplotlib.pyplot as plt
 import copy
 
-from component import Component, Prismoid, PseudoPrismoid, SymmetricAirfoil, DiamondAirfoil
+from component import Component, Prismoid, PseudoPrismoid, SymmetricAirfoil, \
+    DiamondAirfoil, LanhamWing
 
 class Wing:
     """A class calculating and containing the mass properties of an aircraft.
@@ -323,6 +324,9 @@ class Wing:
         elif self._wing_type == "symmetric_airfoil":
             for i in self._component_inputs:
                 self._components[i] = SymmetricAirfoil(self._component_inputs[i])
+        elif self._wing_type == "lanham_wing":
+            for i in self._component_inputs:
+                self._components[i] = LanhamWing(self._component_inputs[i])
         elif self._wing_type == "pseudo_prismoid":
             for i in self._component_inputs:
                 self._components[i] = PseudoPrismoid(self._component_inputs[i])

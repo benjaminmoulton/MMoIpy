@@ -1392,6 +1392,271 @@ class DiamondAirfoil(PseudoPrismoid):
 
 
 
+class LanhamWing(Component):
+    """A default class for calculating and containing the mass properties of a
+    Psuedo Prismoid.
+
+    Parameters
+    ----------
+    input_vars : dict , optional
+        Must be a python dictionary
+    """
+    def __init__(self,input_dict={}):
+
+        # invoke init of parent
+        Component.__init__(self,input_dict)
+
+        # retrieve additional info
+        self.can_use_Lanham = False
+        self._retrieve_info(input_dict)
+
+        # initialize the volume
+        cr,ct = self._cr,self._ct
+        tr,tt = self._tr,self._tt
+        trcr, ttct = tr * cr, tt * ct
+        ka = trcr * (2.*cr + ct) + ttct *(cr + 2.*ct)
+        u0 = 1.0
+        self.volume = self._b / 12. * ka * u0
+
+
+    def _retrieve_info(self,input_dict):
+        """A function which retrieves the information and stores it globally.
+        """
+        
+        # store variables from file input dictionary
+
+        # store input values
+        self._side = input_dict.get("side","right")
+        if self._side == "right": self._delta = 1.0
+        else: self._delta = -1.0
+        
+        # store other variables
+        geometry = input_dict.get("geometry",{})
+        self._b = geometry.get("span",1.0)
+        self._cr,self._ct = geometry.get("chord",[1.0,1.0])
+        self._tr,self._tt = geometry.get("thickness",[0.1,0.1])
+        self._ur,self._ut = geometry.get("camber",[0.01,0.01])
+        self._xmt = geometry.get("max_thickness_location",0.5)
+        self._Lambda = np.deg2rad(input_dict.get("sweep",0.0))
+        self._Gamma = np.deg2rad(input_dict.get("dihedral",0.0))
+        root_location = input_dict.get("root_location",[0.0,0.0,0.0])
+        tip_location  = input_dict.get( "tip_location",[0.0,0.0,0.0])
+        self.locations = {
+            "root" : np.array(root_location)[:,np.newaxis],
+            "tip"  : np.array( tip_location)[:,np.newaxis]
+        }
+        self.origin = self.locations["root"]*1.
+
+        # define a rotation matrix
+        CG = np.cos(-self._delta*self._Gamma)
+        SG = np.sin(-self._delta*self._Gamma)
+        self.R = np.matmul( self.R0, np.array([
+            [1.0, 0.0, 0.0],
+            [0.0,  CG, -SG],
+            [0.0,  SG,  CG]
+        ]) )
+
+
+    def _make_kappa_values(self):
+
+        # initialize certian values for ease of calculation
+        cr,ct = self._cr,self._ct
+        tr,tt = self._tr,self._tt
+        # times values
+        cr2, ct2 = cr**2., ct**2.
+        crct = cr * ct
+        cr3, ct3 = cr**3., ct**3.
+        cr2ct, crct2 = cr2 * ct, cr * ct2
+        trcr, ttct = tr * cr, tt * ct
+
+        # calculate kappa values
+        self._ka = trcr * (2.*cr + ct) + ttct *(cr + 2.*ct)
+
+        one = 3.*cr2 + 2.*crct +    ct2
+        two =    cr2 + 2.*crct + 3.*ct2
+        self._kb = trcr * one + ttct * two
+        
+        self._kc = trcr * (   cr + ct) + ttct *(cr + 3.*ct)
+
+        one = 3.*cr2 + 4.*crct + 3.*ct2
+        two =    cr2 + 3.*crct + 6.*ct2
+        self._kd = trcr * one + 2. * ttct * two
+
+        one = 4.*cr3 + 3.*cr2ct + 2.*crct2 +    ct3
+        two =    cr3 + 2.*cr2ct + 3.*crct2 + 4.*ct3
+        self._ke = trcr * one + ttct * two
+
+        self._kf = trcr * (2.*cr + 3.*ct) + ttct *(3.*cr + 12.*ct)
+
+        one = 4.*cr +    ct
+        two = 3.*cr + 2.*ct
+        thr = 2.*cr + 3.*ct
+        fou =    cr + 4.*ct
+        oner = trcr**3.*one
+        self._kg = oner + trcr**2.*ttct*two + trcr*ttct**2.*thr + ttct**3.*fou
+
+        # fixes for constant multiples outside equation
+        self._ka = self._ka *   1. /    2.
+        self._kb = self._kb *  48. /   80.
+        self._kc = self._kc *  12. /   60.
+        self._kd = self._kd *   1. /    2.
+        self._ke = self._ke * 960. / 1440.
+        self._kf = self._kf *   1. /    2.
+        self._kg = self._kg * 240. / 3360.
+
+
+    def _make_upsilon_values(self):
+
+        # calculate upsilon values
+        self._u0 = 1.0
+        self._u1 = 1.0
+        self._u2 = 1.0
+        self._u3 = 1.0
+
+
+    def _get_lanham_mass_properties(self):
+
+        # # determine properties for later use
+        # b = self._b
+        # c, ct = self._cr, self._ct
+        # tr, tt = self._cr*self._tr, self._ct*self._tt
+        # LL = np.arctan( np.tan(self._Lambda) + 0.25 / b * ( c - ct ) )
+        # LT = np.arctan( np.tan(self._Lambda) - 0.75 / b * ( c - ct ) )
+        # tLL, tLT = np.tan(LL), np.tan(LT)
+        # ca = self._cr
+        # cb = np.tan(self._Lambda) + 0.25 * ( c - ct )
+        # cc = cb + ct
+
+        # # save mass
+        # m = self.mass
+        # self.mass_lanham = m
+
+        # # calculate volume
+        # V = b * ( tr*(c + b/2.*(tLT-tLL)) - (tr-tt)*(c/2. + b/3.*(tLT-tLL)) )
+        # self.volume_lanham = V
+
+        # # calculate cg location
+        # xcg = 2 * b * (-ca**2. + cb**2. + cc*cb + cc**2.) / (-ca + cb + cc)
+        # ycg = b**2./V*(tr*(c/2.+b/3.*(tLT-tLL)) -(tr-tt)*(c/3.+b/4.*(tLT-tLL)))
+        # self.cg_location_lanham = np.array([
+        #     [xcg],
+        #     [self._delta * ycg],
+        #     [0.0]
+        # ])
+        # print(xcg,1/(-ca + cb + cc))
+
+        # calculate inertia tensor
+        # Ixx = m * b**3. / V * ( (tr-tt) * (c / 4. + b / 5. * (tLT-tLL)) \
+        #     + tr * (c / 3. + b / 4. * (tLT-tLL)) )
+        
+        # Iyy = m * b / V * ( tr * (c**3. / 3. + b * c * tLT*(c/2. + b/3. * tLT)\
+        #     + b**3. / 12. * (tLT**3. - tLL**3.)) \
+        #         - (tr-tt) * (c**3. / 6. + b * c * tLT * (c /3. + b /4. * tLT) \
+        #             + b**3. / 15 * (tLT**3. - tLL**3.)) )
+        
+        # Izz = Ixx + Iyy
+
+        # one = c**2.*b**2./4. + c*b**3./3.*tLT + b**4./ 8.*(tLT**2. - tLL**2.)
+        # two = c**2.*b**2./6. + c*b**3./4.*tLT + b**4./10.*(tLT**2. - tLL**2.)
+        # thr = m / V * tr      * np.sin(self._Gamma) * one
+        # fou = m / V * (tr-tt) * np.sin(self._Gamma) * two
+        # Ixz = thr - fou
+
+        self.mass_lanham = self.mass
+        self.volume_lanham = 1.0
+        self.cg_location_lanham = np.zeros((3,1))
+        Ixx = Iyy = Izz = Ixz = 0.0
+        Ixy = 0.0
+        Iyz = 0.0
+
+        self.inertia_tensor_lanham = np.array([
+            [Ixx,Ixy,Ixz],
+            [Ixy,Iyy,Iyz],
+            [Ixz,Iyz,Izz]
+        ])
+
+
+    def get_mass_properties(self):
+        """Method which returns mass, cg, I about cg rotated to total cframe"""
+
+        # calculate kappa values
+        self._make_kappa_values()
+
+        # calculate upsilon values
+        self._make_upsilon_values()
+
+        # calculate mass
+        if self._given_density_not_mass:
+            self.mass = self.density * self.volume
+        
+        # calculate lanham properties
+        self._get_lanham_mass_properties()
+        
+        # calculate center of gravity values
+        num1 = 3. * self._kb * self._u1
+        num = num1 + 4. * self._b * self._kc * self._u0 * np.tan(self._Lambda)
+        xbar = - num / 20. / self._ka / self._u0
+        ybar = self._delta * self._b * self._kc * self._u0/5./self._ka/self._u0
+        self.cg_location = np.array([xbar,ybar,0.0])[:,np.newaxis]
+
+        # calculate moments and products of inertia about the wing root c/4
+        num = 56. * self._b**2. * self._kf * self._u0 + self._kg * self._u3
+        Ixxo = self.mass * num / 280. / self._ka / self._u0
+        
+        one = 2. * self._b * self._kf * self._u0 * np.tan(self._Lambda)**2.
+        two = self._kd * self._u1 * np.tan(self._Lambda)
+        num1 = 84. * self._b * (one + two) + 49. * self._ke * self._u2
+        num = num1 + 3. * self._kg * self._u3
+        Iyyo = self.mass * num / 840. / self._ka / self._u0
+
+        one = self._b * ( np.tan(self._Lambda)**2. + 1. ) * self._kf * self._u0
+        two = self._kd * self._u1 * np.tan(self._Lambda)
+        num = 12. * self._b * (2. * one + two) + 7. * self._ke * self._u2
+        Izzo = self.mass * num / 120. / self._ka / self._u0
+
+        num1 = 4. * self._b * self._kf * self._u0 * np.tan(self._Lambda)
+        num = num1 + self._kd * self._u1
+        Ixyo = -self._delta * self._b * self.mass * num / 20./self._ka/self._u0
+
+        Ixzo = 0.0
+        Iyzo = 0.0
+
+        # create inertia tensor
+        Io = np.array([
+            [ Ixxo,-Ixyo,-Ixzo],
+            [-Ixyo, Iyyo,-Iyzo],
+            [-Ixzo,-Iyzo, Izzo]
+        ])
+
+        # calculate mass shift from parallel axis theorem
+        s = self.cg_location
+        inner_product = np.matmul(s.T,s)[0,0]
+        outer_product = np.matmul(s,s.T)
+        I_shift = self.mass*( inner_product * np.eye(3) - outer_product )
+
+        # calculate inertia tensor about the cg
+        self.inertia_tensor = Io - I_shift
+
+        self.properties_dict = {
+            "mass" : self.mass,
+            "volume" : self.volume,
+            "cg_location" : self.cg_location,
+            "angular_momentum" : self.angular_momentum,
+            "inertia_tensor" : self.inertia_tensor
+        }
+        return self.properties_dict
+
+
+    def get_cg_location(self,use_Lanham_approximations=False):
+        """Method which returns the cg location whether calculated using the
+        method presented or the Lanham method."""
+        cg_location = np.matmul(self.R,self.cg_location)
+
+        # shift cg by root location given
+        return cg_location + self.locations["root"]
+
+
+
 class Rotor(Component):
     """A default class for calculating and containing the mass properties of a
     Rotor.
