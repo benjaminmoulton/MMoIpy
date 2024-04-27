@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # symmetric wing
     sym_wing = {
         "ID" : 1,
-        "density": 0.3,
+        "mass": 0.3,
         "type" : "symmetric_airfoil",
         "side" : "right",
         "connect_to" : {
@@ -22,6 +22,7 @@ if __name__ == "__main__":
         },
         "semispan" : 4.0,
         "sweep" : 10.0,
+        "dihedral" : -5.0,
         "chord" : [ [0.0, 1.0],
                     [1.0, 0.5]],
         "thickness" : [ [0.0, 0.08],

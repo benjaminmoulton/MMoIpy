@@ -1534,8 +1534,6 @@ class LanhamWing(Component):
     def get_mass_properties(self):
         """Method which returns mass, cg, I about cg rotated to total cframe"""
         
-        
-
         # determine properties for later use
         b = self._b
         c, ct = self._cr, self._ct
@@ -1550,6 +1548,9 @@ class LanhamWing(Component):
         # calculate mass
         if self._given_density_not_mass:
             self.mass = self.density * self.volume
+        #
+        m = self.mass
+        V = self.volume
         
         # calculate center of gravity values
         Ko = 0.703
@@ -1560,65 +1561,41 @@ class LanhamWing(Component):
         self.cg_location = np.array([xbar,ybar,0.0])[:,np.newaxis]
 
         # calculate inertia tensor
-        # Ixx = m * b**3. / V * ( (tr-tt) * (c / 4. + b / 5. * (tLT-tLL)) \
-        #     + tr * (c / 3. + b / 4. * (tLT-tLL)) )
-        
-        # Iyy = m * b / V * ( tr * (c**3. / 3. + b * c * tLT*(c/2. + b/3. * tLT)\
-        #     + b**3. / 12. * (tLT**3. - tLL**3.)) \
-        #         - (tr-tt) * (c**3. / 6. + b * c * tLT * (c /3. + b /4. * tLT) \
-        #             + b**3. / 15 * (tLT**3. - tLL**3.)) )
-        
-        # Izz = Ixx + Iyy
-
-        # one = c**2.*b**2./4. + c*b**3./3.*tLT + b**4./ 8.*(tLT**2. - tLL**2.)
-        # two = c**2.*b**2./6. + c*b**3./4.*tLT + b**4./10.*(tLT**2. - tLL**2.)
-        # thr = m / V * tr      * np.sin(self._Gamma) * one
-        # fou = m / V * (tr-tt) * np.sin(self._Gamma) * two
-        # Ixz = thr - fou
-
-        # quit()
-
         # calculate moments and products of inertia about the wing root c/4
-        # num = 56. * self._b**2. * self._kf * self._u0 + self._kg * self._u3
-        # Ixxo = self.mass * num / 280. / self._ka / self._u0
-        Ixxo = 0.0
+        one = b*(tLT - tLL)
+        two = (tr - tt)*(c/4. + one/5.)
+        thr =  tr      *(c/3. + one/4.)
+        I1xx = m*b**3./V*(two + thr)
         
-        # one = 2. * self._b * self._kf * self._u0 * np.tan(self._Lambda)**2.
-        # two = self._kd * self._u1 * np.tan(self._Lambda)
-        # num1 = 84. * self._b * (one + two) + 49. * self._ke * self._u2
-        # num = num1 + 3. * self._kg * self._u3
-        # Iyyo = self.mass * num / 840. / self._ka / self._u0
-        Iyyo = 0.0
+        one = b*c*tLT*(c/2. + b*tLT/3.)
+        two = b**3./12.*(tLT**3. - tLL**3.)
+        thr =  tr      *(c**3./3. + one + two)
+        fou = b*c*tLT*(c/3. + b*tLT/4.)
+        fiv = b**3./15.*(tLT**3. - tLL**3.)
+        six = (tr - tt)*(c**3./6. + fou + fiv)
+        I1yy = m*b/V*(thr + six)
 
-        # one = self._b * ( np.tan(self._Lambda)**2. + 1. ) * self._kf * self._u0
-        # two = self._kd * self._u1 * np.tan(self._Lambda)
-        # num = 12. * self._b * (2. * one + two) + 7. * self._ke * self._u2
-        # Izzo = self.mass * num / 120. / self._ka / self._u0
-        Izzo = 0.0
+        I1zz = I1xx + I1yy
 
-        # num1 = 4. * self._b * self._kf * self._u0 * np.tan(self._Lambda)
-        # num = num1 + self._kd * self._u1
-        # Ixyo = -self._delta * self._b * self.mass * num / 20./self._ka/self._u0
-        Ixyo = 0.0
-
-        Ixzo = 0.0
-        Iyzo = 0.0
+        I1xy = 0.0
+        I1xz = 0.0
+        I1yz = 0.0
 
         # create inertia tensor
-        Io = np.array([
-            [ Ixxo,-Ixyo,-Ixzo],
-            [-Ixyo, Iyyo,-Iyzo],
-            [-Ixzo,-Iyzo, Izzo]
+        I1 = np.array([
+            [ I1xx,-I1xy,-I1xz],
+            [-I1xy, I1yy,-I1yz],
+            [-I1xz,-I1yz, I1zz]
         ])
 
         # calculate mass shift from parallel axis theorem
-        s = self.cg_location
+        s = self.cg_location + np.array([-c/4.,0.,0.])
         inner_product = np.matmul(s.T,s)[0,0]
         outer_product = np.matmul(s,s.T)
         I_shift = self.mass*( inner_product * np.eye(3) - outer_product )
 
         # calculate inertia tensor about the cg
-        self.inertia_tensor = Io - I_shift
+        self.inertia_tensor = I1 - I_shift
 
         self.properties_dict = {
             "mass" : self.mass,
