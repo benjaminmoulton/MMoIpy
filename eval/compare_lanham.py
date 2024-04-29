@@ -14,7 +14,7 @@ if __name__ == "__main__":
     # symmetric wing
     sym_wing = {
         "ID" : 1,
-        "mass": 0.3,
+        "mass": 3.0,
         "type" : "symmetric_airfoil",
         "side" : "right",
         "connect_to" : {
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     # run for various geometries
     num = 100
-    ms  = np.zeros((2,num,))
+    ms  = np.zeros((2,num,)) # first index, 0 == us, 1 == Lanham
     Vs  = np.zeros((2,num,))
     cgs = np.zeros((2,3,num))
     Is  = np.zeros((2,3,3,num))
@@ -88,6 +88,78 @@ if __name__ == "__main__":
         Ios[0,:,:,i] = sym_props["origin_inertia_tensor"]
         Ios[1,:,:,i] = lan_props["origin_inertia_tensor"]
     
+    # read in SW data
+    RTSW = np.array([0.0,0.2,0.4,0.6,0.8,1.0])
+    SWfn = ["RT"+"{:>02d}".format(int(RT*10))+".txt" for RT in RTSW]
+    #
+    SWnum = len(RTSW)
+    mW  = np.zeros((SWnum,))
+    VW  = np.zeros((SWnum,))
+    cgW = np.zeros((3,SWnum))
+    IW  = np.zeros((3,3,SWnum))
+    IoW = np.zeros((3,3,SWnum))
+    #
+    for j,fn in enumerate(SWfn):
+        with open(fn,"r") as file:
+            # info = []
+            # for line in file:
+            #     info.append([value for value in line.split()])
+            
+            # info = np.array(info)
+
+            # file.close()
+            # print(info)
+
+            # intro
+            for i in range(4): file.readline()
+            # mass
+            mW[j] = float(file.readline().split("=")[1].split()[0]) # 
+            # readline
+            for i in range(1): file.readline()
+            # volume
+            VW[j] = float(file.readline().split("=")[1].split()[0]) # 
+            # readline
+            for i in range(4): file.readline()
+            # cg
+            cgW[:,j] = [
+                float(file.readline().split("=")[1]), # 
+                float(file.readline().split("=")[1]), # 
+                float(file.readline().split("=")[1]), # 
+            ]
+            # readline
+            for i in range(9): file.readline()
+            # Inertia
+            line = file.readline().split("=")
+            Lxx = float(line[1].split("\t")[0])
+            Lxy = float(line[2].split("\t")[0])
+            Lxz = float(line[3].split("\n")[0])
+            line = file.readline().split("=")
+            Lyy = float(line[2].split("\t")[0])
+            Lyz = float(line[3].split("\n")[0])
+            line = file.readline().split("=")
+            Lzz = float(line[3].split("\n")[0])
+            IW [:,:,j] = [
+                [ Lxx,-Lxy,-Lxz],
+                [-Lxy, Lyy,-Lyz],
+                [-Lxz,-Lyz, Lzz]
+            ]
+            # readline
+            for i in range(3): file.readline()
+            # Inertia
+            line = file.readline().split("=")
+            Ixx = float(line[1].split("\t")[0])
+            Ixy = float(line[2].split("\t")[0])
+            Ixz = float(line[3].split("\n")[0])
+            line = file.readline().split("=")
+            Iyy = float(line[2].split("\t")[0])
+            Iyz = float(line[3].split("\n")[0])
+            line = file.readline().split("=")
+            Izz = float(line[3].split("\n")[0])
+            IoW[:,:,j] = [
+                [ Ixx,-Ixy,-Ixz],
+                [-Ixy, Iyy,-Iyz],
+                [-Ixz,-Iyz, Izz]
+            ]    
     
     # plot
     # change plot text parameters
@@ -116,14 +188,21 @@ if __name__ == "__main__":
     fig_cgs,axs_cgs = plt.subplots(3,1,**plot_dict)
     fig_Ims,axs_Ims = plt.subplots(3,1,**plot_dict)
     fig_Ips,axs_Ips = plt.subplots(3,1,**plot_dict)
+    # labels
+    uslbl = "Analytic"
+    lnlbl = "Lanham"
+    SWlbl = "CAD"
+
 
     #   mass & volume
     axs_mV [0].grid(which="major",lw=0.6,ls="-",c="0.75")
     axs_mV [1].grid(which="major",lw=0.6,ls="-",c="0.75")
-    axs_mV [0].plot(RT,ms[0],"k-",label="Analytic")
-    axs_mV [0].plot(RT,ms[1],"k--",label="Lanham")
-    axs_mV [1].plot(RT,Vs[0],"k-")
-    axs_mV [1].plot(RT,Vs[1],"k--")
+    axs_mV [0].plot(RT  ,ms[0],"k-",label=uslbl)
+    axs_mV [0].plot(RT  ,ms[1],"k--",label=lnlbl)
+    axs_mV [0].plot(RTSW,mW   ,"w.",mec="k",mew=0.5,label=SWlbl)
+    axs_mV [1].plot(RT  ,Vs[0],"k-")
+    axs_mV [1].plot(RT  ,Vs[1],"k--")
+    axs_mV [1].plot(RTSW,VW   ,"w.",mec="k",mew=0.5)
     axs_mV [0].set_ylabel(r"mass, $m$")
     axs_mV [1].set_ylabel(r"volume, $V$")
     axs_mV [1].set_xlabel("Taper Ratio, $c_t/c_r$")
@@ -133,12 +212,15 @@ if __name__ == "__main__":
     axs_cgs[0].grid(which="major",lw=0.6,ls="-",c="0.75")
     axs_cgs[1].grid(which="major",lw=0.6,ls="-",c="0.75")
     axs_cgs[2].grid(which="major",lw=0.6,ls="-",c="0.75")
-    axs_cgs[0].plot(RT,cgs[0,0],"k-",label="Analytic")
-    axs_cgs[0].plot(RT,cgs[1,0],"k--",label="Lanham")
-    axs_cgs[1].plot(RT,cgs[0,1],"k-")
-    axs_cgs[1].plot(RT,cgs[1,1],"k--")
-    axs_cgs[2].plot(RT,cgs[0,2],"k-")
-    axs_cgs[2].plot(RT,cgs[1,2],"k--")
+    axs_cgs[0].plot(RT  ,cgs[0,0],"k-",label=uslbl)
+    axs_cgs[0].plot(RT  ,cgs[1,0],"k--",label=lnlbl)
+    axs_cgs[0].plot(RTSW,cgW  [0],"w.",mec="k",mew=0.5,label=SWlbl)
+    axs_cgs[1].plot(RT  ,cgs[0,1],"k-")
+    axs_cgs[1].plot(RT  ,cgs[1,1],"k--")
+    axs_cgs[1].plot(RTSW,cgW  [1],"w.",mec="k",mew=0.5)
+    axs_cgs[2].plot(RT  ,cgs[0,2],"k-")
+    axs_cgs[2].plot(RT  ,cgs[1,2],"k--")
+    axs_cgs[2].plot(RTSW,cgW  [2],"w.",mec="k",mew=0.5)
     axs_cgs[0].set_ylabel(r"$\bar{x}$")
     axs_cgs[1].set_ylabel(r"$\bar{y}$")
     axs_cgs[2].set_ylabel(r"$\bar{z}$")
@@ -149,18 +231,24 @@ if __name__ == "__main__":
     axs_Ims[0].grid(which="major",lw=0.6,ls="-",c="0.75")
     axs_Ims[1].grid(which="major",lw=0.6,ls="-",c="0.75")
     axs_Ims[2].grid(which="major",lw=0.6,ls="-",c="0.75")
-    axs_Ims[0].plot(RT,Is [0,0,0],"k-",label="Analytic")
-    axs_Ims[0].plot(RT,Is [1,0,0],"k--",label="Lanham")
-    axs_Ims[1].plot(RT,Is [0,1,1],"k-")
-    axs_Ims[1].plot(RT,Is [1,1,1],"k--")
-    axs_Ims[2].plot(RT,Is [0,2,2],"k-")
-    axs_Ims[2].plot(RT,Is [1,2,2],"k--")
-    # axs_Ims[0].plot(RT,Ios[0,0,0],"0.4",ls="-",label="origin")
-    # axs_Ims[0].plot(RT,Ios[1,0,0],"0.4",ls="--")
-    # axs_Ims[1].plot(RT,Ios[0,1,1],"0.4",ls="-")
-    # axs_Ims[1].plot(RT,Ios[1,1,1],"0.4",ls="--")
-    # axs_Ims[2].plot(RT,Ios[0,2,2],"0.4",ls="-")
-    # axs_Ims[2].plot(RT,Ios[1,2,2],"0.4",ls="--")
+    axs_Ims[0].plot(RT  ,Is [0,0,0],"k-",label=uslbl)
+    axs_Ims[0].plot(RT  ,Is [1,0,0],"k--",label=lnlbl)
+    axs_Ims[0].plot(RTSW,IW   [0,0],"w.",mec="k",mew=0.5,label=SWlbl)
+    axs_Ims[1].plot(RT  ,Is [0,1,1],"k-")
+    axs_Ims[1].plot(RT  ,Is [1,1,1],"k--")
+    axs_Ims[1].plot(RTSW,IW   [1,1],"w.",mec="k",mew=0.5)
+    axs_Ims[2].plot(RT  ,Is [0,2,2],"k-")
+    axs_Ims[2].plot(RT  ,Is [1,2,2],"k--")
+    axs_Ims[2].plot(RTSW,IW   [2,2],"w.",mec="k",mew=0.5)
+    # axs_Ims[0].plot(RT  ,Ios[0,0,0],"0.4",ls="-",label="origin")
+    # axs_Ims[0].plot(RT  ,Ios[1,0,0],"0.4",ls="--")
+    # axs_Ims[0].plot(RTSW,IoW  [0,0],"w.",mec="0.4",mew=0.5)
+    # axs_Ims[1].plot(RT  ,Ios[0,1,1],"0.4",ls="-")
+    # axs_Ims[1].plot(RT  ,Ios[1,1,1],"0.4",ls="--")
+    # axs_Ims[1].plot(RTSW,IoW  [1,1],"w.",mec="0.4",mew=0.5)
+    # axs_Ims[2].plot(RT  ,Ios[0,2,2],"0.4",ls="-")
+    # axs_Ims[2].plot(RT  ,Ios[1,2,2],"0.4",ls="--")
+    # axs_Ims[2].plot(RTSW,IoW  [2,2],"w.",mec="0.4",mew=0.5)
     axs_Ims[0].set_ylabel(r"$I_{xx}$")
     axs_Ims[1].set_ylabel(r"$I_{yy}$")
     axs_Ims[2].set_ylabel(r"$I_{zz}$")
@@ -171,18 +259,24 @@ if __name__ == "__main__":
     axs_Ips[0].grid(which="major",lw=0.6,ls="-",c="0.75")
     axs_Ips[1].grid(which="major",lw=0.6,ls="-",c="0.75")
     axs_Ips[2].grid(which="major",lw=0.6,ls="-",c="0.75")
-    axs_Ips[0].plot(RT,-Is [0,0,1],"k-",label="Analytic")
-    axs_Ips[0].plot(RT,-Is [1,0,1],"k--",label="Lanham")
-    axs_Ips[1].plot(RT,-Is [0,0,2],"k-")
-    axs_Ips[1].plot(RT,-Is [1,0,2],"k--")
-    axs_Ips[2].plot(RT,-Is [0,1,2],"k-")
-    axs_Ips[2].plot(RT,-Is [1,1,2],"k--")
-    # axs_Ips[0].plot(RT,-Ios[0,0,1],"0.4",ls="-",label="origin")
-    # axs_Ips[0].plot(RT,-Ios[1,0,1],"0.4",ls="--")
-    # axs_Ips[1].plot(RT,-Ios[0,0,2],"0.4",ls="-")
-    # axs_Ips[1].plot(RT,-Ios[1,0,2],"0.4",ls="--")
-    # axs_Ips[2].plot(RT,-Ios[0,1,2],"0.4",ls="-")
-    # axs_Ips[2].plot(RT,-Ios[1,1,2],"0.4",ls="--")
+    axs_Ips[0].plot(RT  ,-Is [0,0,1],"k-",label=uslbl)
+    axs_Ips[0].plot(RT  ,-Is [1,0,1],"k--",label=lnlbl)
+    axs_Ips[0].plot(RTSW,-IW   [0,1],"w.",mec="k",mew=0.5,label=SWlbl)
+    axs_Ips[1].plot(RT  ,-Is [0,0,2],"k-")
+    axs_Ips[1].plot(RT  ,-Is [1,0,2],"k--")
+    axs_Ips[1].plot(RTSW,-IW   [0,2],"w.",mec="k",mew=0.5)
+    axs_Ips[2].plot(RT  ,-Is [0,1,2],"k-")
+    axs_Ips[2].plot(RT  ,-Is [1,1,2],"k--")
+    axs_Ips[2].plot(RTSW,-IW   [1,2],"w.",mec="k",mew=0.5)
+    # axs_Ips[0].plot(RT  ,-Ios[0,0,1],"0.4",ls="-",label="origin")
+    # axs_Ips[0].plot(RT  ,-Ios[1,0,1],"0.4",ls="--")
+    # axs_Ips[0].plot(RTSW,-IoW  [0,1],"w.",mec="0.4",mew=0.5)
+    # axs_Ips[1].plot(RT  ,-Ios[0,0,2],"0.4",ls="-")
+    # axs_Ips[1].plot(RT  ,-Ios[1,0,2],"0.4",ls="--")
+    # axs_Ips[1].plot(RTSW,-IoW  [0,2],"w.",mec="0.4",mew=0.5)
+    # axs_Ips[2].plot(RT  ,-Ios[0,1,2],"0.4",ls="-")
+    # axs_Ips[2].plot(RT  ,-Ios[1,1,2],"0.4",ls="--")
+    # axs_Ips[2].plot(RTSW,-IoW  [1,2],"w.",mec="0.4",mew=0.5)
     axs_Ips[0].set_ylabel(r"$I_{xy}$")
     axs_Ips[1].set_ylabel(r"$I_{xz}$")
     axs_Ips[2].set_ylabel(r"$I_{yz}$")
@@ -192,12 +286,13 @@ if __name__ == "__main__":
 
     # set name
     save_figs = True
+    transp = False # True # 
     if save_figs:
         file_end = "png" # "pdf" # 
-        fig_mV .savefig("comp_mVs."+file_end,dpi=300.,transparent=True)
-        fig_cgs.savefig("comp_cgs."+file_end,dpi=300.,transparent=True)
-        fig_Ims.savefig("comp_Ims."+file_end,dpi=300.,transparent=True)
-        fig_Ips.savefig("comp_Ips."+file_end,dpi=300.,transparent=True)
+        fig_mV .savefig("comp_mVs."+file_end,dpi=300.,transparent=transp)
+        fig_cgs.savefig("comp_cgs."+file_end,dpi=300.,transparent=transp)
+        fig_Ims.savefig("comp_Ims."+file_end,dpi=300.,transparent=transp)
+        fig_Ips.savefig("comp_Ips."+file_end,dpi=300.,transparent=transp)
     show_plots = False
     if show_plots:
         plt.show()

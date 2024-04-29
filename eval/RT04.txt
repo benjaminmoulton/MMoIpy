@@ -1,0 +1,32 @@
+Mass properties of eval_test
+     Configuration: Default
+     Coordinate system: -- default --
+
+Mass (user-overridden) = 3.00000000 pounds
+
+Volume = 0.09343529 cubic feet
+
+Surface area = 4.91332190 square feet
+
+Center of mass: ( feet )
+	X = 1.65036656
+	Y = 4.24954770
+	Z = -0.89057991
+
+Principal axes of inertia and principal moments of inertia: ( pounds * square feet )
+Taken at the center of mass.
+	 Ix = (-0.14568377,  0.98555840,  0.08631842)   	Px = 0.09786371
+	 Iy = (-0.98933118, -0.14514829, -0.01248151)   	Py = 2.76648863
+	 Iz = ( 0.00022771, -0.08721586,  0.99618941)   	Pz = 2.86298556
+
+Moments of inertia: ( pounds * square feet )
+Taken at the center of mass and aligned with the output coordinate system. (Using positive tensor notation.)
+	Lxx = 2.70985038	Lxy = -0.38315889	Lxz = -0.03358036
+	Lyx = -0.38315889	Lyy = 0.17511956	Lyz = 0.23540884
+	Lzx = -0.03358036	Lzy = 0.23540884	Lzz = 2.84236796
+
+Moments of inertia: ( pounds * square feet )
+Taken at the output coordinate system. (Using positive tensor notation.)
+	Ixx = 59.26521510	Ixy = 20.65677534	Ixz = -4.44293024
+	Iyx = 20.65677534	Iyy = 10.72564658	Iyz = -11.11827653
+	Izx = -4.44293024	Izy = -11.11827653	Izz = 65.18946430
