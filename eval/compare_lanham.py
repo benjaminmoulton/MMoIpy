@@ -54,9 +54,9 @@ if __name__ == "__main__":
         }
     }
 
-    # run code
-    test = mmoi(inp_dict)
-    test.get_mass_properties(report=True,individual=True)
+    # # run code
+    # test = mmoi(inp_dict)
+    # test.get_mass_properties(report=True,individual=True)
     # test.visualize(plot_ids=None)
 
     # run for various geometries
@@ -231,13 +231,13 @@ if __name__ == "__main__":
     axs_Ims[0].grid(which="major",lw=0.6,ls="-",c="0.75")
     axs_Ims[1].grid(which="major",lw=0.6,ls="-",c="0.75")
     axs_Ims[2].grid(which="major",lw=0.6,ls="-",c="0.75")
-    axs_Ims[0].plot(RT  ,Is [0,0,0],"k-",label=uslbl) # r"$I_{xx}$")#
-    axs_Ims[0].plot(RT  ,Is [1,0,0],"k--",label=lnlbl)
-    axs_Ims[1].plot(RT  ,Is [0,1,1],"-",c="0.3",label=uslbl) # r"$I_{yy}$")#
-    axs_Ims[1].plot(RT  ,Is [1,1,1],"k--",label=lnlbl)
-    axs_Ims[2].plot(RT  ,Is [0,2,2],"-",c="0.6",label=uslbl) # r"$I_{zz}$")#
-    axs_Ims[2].plot(RT  ,Is [1,2,2],"k--",label=lnlbl)
-    axs_Ims[0].plot(RTSW,IW   [0,0],"w.",mec="k",mew=0.5,label=SWlbl)
+    axs_Ims[0].plot(RT  ,Is [0,0,0], "-",  c=  "k",        label=uslbl) # r"$I_{xx}$")#
+    axs_Ims[0].plot(RT  ,Is [1,0,0],"--",  c=  "k",        label=lnlbl)
+    axs_Ims[1].plot(RT  ,Is [0,1,1], "-",  c="0.3",        label=uslbl) # r"$I_{yy}$")#
+    axs_Ims[1].plot(RT  ,Is [1,1,1],"--",  c="0.3",        label=lnlbl)
+    axs_Ims[2].plot(RT  ,Is [0,2,2], "-",  c="0.6",        label=uslbl) # r"$I_{zz}$")#
+    axs_Ims[2].plot(RT  ,Is [1,2,2],"--",  c="0.6",        label=lnlbl)
+    axs_Ims[0].plot(RTSW,IW   [0,0],"w.",mec=  "k",mew=0.5,label=SWlbl)
     axs_Ims[1].plot(RTSW,IW   [1,1],"w.",mec="0.3",mew=0.5,label=SWlbl)
     axs_Ims[2].plot(RTSW,IW   [2,2],"w.",mec="0.6",mew=0.5,label=SWlbl)
     # axs_Ims[0].plot(RT  ,Ios[0,0,0],"0.4",ls="-",label="origin")
@@ -289,7 +289,7 @@ if __name__ == "__main__":
     save_figs = True
     transp = False # True # 
     if save_figs:
-        file_end = "pdf" # "png" # 
+        file_end = "png" # "pdf" # 
         fig_mV .savefig("comp_mVs."+file_end,dpi=300.,transparent=transp)
         fig_cgs.savefig("comp_cgs."+file_end,dpi=300.,transparent=transp)
         fig_Ims.savefig("comp_Ims."+file_end,dpi=300.,transparent=transp)
