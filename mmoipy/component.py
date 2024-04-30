@@ -1454,7 +1454,6 @@ class LanhamWing(Component):
         self._Lambda_TE = np.arctan(np.tan(self._Lambda) - 3.*rat)
 
         # determine ca, cb, cc
-        self._Lambda_LE = np.deg2rad(-10.0)
         btanLLE = self._b*np.tan(self._Lambda_LE)
         self._Ca,self._Cb,self._Cc = \
             np.sort([self._cr,btanLLE,btanLLE + self._cr])
