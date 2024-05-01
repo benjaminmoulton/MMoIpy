@@ -1141,7 +1141,7 @@ class Prismoid(Component):
         xbar = - num / 20. / self._ka / self._u0
         ybar = self._delta * self._b * self._kc * self._u0/5./self._ka/self._u0
         self.cg_location = np.array([xbar,ybar,0.0])[:,np.newaxis]
-        print("sym",xbar,ybar,0.0)
+        # print("sym",xbar,ybar,0.0)
 
         # calculate moments and products of inertia about the wing root c/4
         num = 56. * self._b**2. * self._kf * self._u0 + self._kg * self._u3
@@ -1560,7 +1560,6 @@ class LanhamWing(Component):
         ybar = self._delta*b**2./self.volume*(tr*(c/2. + b/3.*tLTmtLL) - \
             (tr - tt)*(c/3. + b/4.*tLTmtLL))
         self.cg_location = np.array([xbar,ybar,0.0])[:,np.newaxis]
-        print("lan",xbar,ybar,0.0)
 
         # calculate inertia tensor
         # calculate moments and products of inertia about the wing root c/4
@@ -1575,7 +1574,7 @@ class LanhamWing(Component):
         fou = b*c*tLT*(c/3. + b*tLT/4.)
         fiv = b**3./15.*(tLT**3. - tLL**3.)
         six = (tr - tt)*(c**3./6. + fou + fiv)
-        I1yy = m*b/V*(thr + six)
+        I1yy = m*b/V*(thr - six)
 
         I1zz = I1xx + I1yy
 
@@ -1590,9 +1589,7 @@ class LanhamWing(Component):
             [-I1xy, I1yy,-I1yz],
             [-I1xz,-I1yz, I1zz]
         ])
-        print(I1)
         I1 = np.matmul(R1,np.matmul(I1,R1.T))
-        print(I1)
 
         # calculate mass shift from parallel axis theorem
         s = self.cg_location + np.array([-c/4.,0.,0.])
