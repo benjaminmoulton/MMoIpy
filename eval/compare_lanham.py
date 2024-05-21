@@ -204,7 +204,7 @@ if __name__ == "__main__":
     axs_mV .plot(RT  ,Vs[1],"k--",label=lnlbl)
     axs_mV .plot(RTSW,VW   ,"w.",mec="k",mew=0.5,label=SWlbl)
     # axs_mV .set_ylabel(r"mass, $m$")
-    axs_mV .set_ylabel(r"volume, $V$")
+    axs_mV .set_ylabel(r"Volume, $V$ [ft$^3$]")
     axs_mV .set_xlabel("Taper Ratio, $c_t/c_r$")
     axs_mV .set_xlim((RT[0],RT[-1]))
     axs_mV .legend()
@@ -221,9 +221,9 @@ if __name__ == "__main__":
     axs_cgs[2].plot(RT  ,cgs[0,2],"k-",label=uslbl)
     axs_cgs[2].plot(RT  ,cgs[1,2],"k--",label=lnlbl)
     axs_cgs[2].plot(RTSW,cgW  [2],"w.",mec="k",mew=0.5,label=SWlbl)
-    axs_cgs[0].set_ylabel(r"$\bar{x}$")
-    axs_cgs[1].set_ylabel(r"$\bar{y}$")
-    axs_cgs[2].set_ylabel(r"$\bar{z}$")
+    axs_cgs[0].set_ylabel(r"$\bar{x}$ [ft]")
+    axs_cgs[1].set_ylabel(r"$\bar{y}$ [ft]")
+    axs_cgs[2].set_ylabel(r"$\bar{z}$ [ft]")
     axs_cgs[2].set_xlabel("Taper Ratio, $c_t/c_r$")
     axs_cgs[2].set_xlim((RT[0],RT[-1]))
     axs_cgs[0].legend()
@@ -252,7 +252,7 @@ if __name__ == "__main__":
     axs_Ims.set_ylabel(r"$I_{xx}$") # [0]
     axs_Ims.set_ylabel(r"$I_{yy}$") # [1]
     axs_Ims.set_ylabel(r"$I_{zz}$") # [2]
-    axs_Ims.set_ylabel("Moments of Inertia")
+    axs_Ims.set_ylabel("Moments of Inertia [slugs-ft$^2$]")
     axs_Ims.set_xlabel("Taper Ratio, $c_t/c_r$") # [2]
     axs_Ims.set_xlim((RT[0],RT[-1])) # [2]
     axs_Ims.legend() # [0]
@@ -278,9 +278,9 @@ if __name__ == "__main__":
     # axs_Ips[2].plot(RT  ,-Ios[0,1,2],"0.4",ls="-")
     # axs_Ips[2].plot(RT  ,-Ios[1,1,2],"0.4",ls="--")
     # axs_Ips[2].plot(RTSW,-IoW  [1,2],"w.",mec="0.4",mew=0.5)
-    axs_Ips[0].set_ylabel(r"$I_{xy}$")
-    axs_Ips[1].set_ylabel(r"$I_{xz}$")
-    axs_Ips[2].set_ylabel(r"$I_{yz}$")
+    axs_Ips[0].set_ylabel(r"$I_{xy}$ [slugs-ft$^2$]")
+    axs_Ips[1].set_ylabel(r"$I_{xz}$ [slugs-ft$^2$]")
+    axs_Ips[2].set_ylabel(r"$I_{yz}$ [slugs-ft$^2$]")
     axs_Ips[2].set_xlabel("Taper Ratio, $c_t/c_r$")
     axs_Ips[2].set_xlim((RT[0],RT[-1]))
     axs_Ips[0].legend()
