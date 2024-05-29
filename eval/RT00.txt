@@ -4,29 +4,29 @@ Mass properties of eval_test
 
 Mass (user-overridden) = 3.00000000 pounds
 
-Volume = 0.07340719 cubic feet
+Volume = 0.07340720 cubic feet
 
-Surface area = 4.10271490 square feet
+Surface area = 4.10271559 square feet
 
 Center of mass: ( feet )
-	X = 1.69481584
-	Y = 3.99731256
-	Z = -0.91264907
+	X = 1.69481586
+	Y = 4.00113064
+	Z = -0.99990297
 
 Principal axes of inertia and principal moments of inertia: ( pounds * square feet )
 Taken at the center of mass.
-	 Ix = (-0.13975152,  0.98640860,  0.08641520)   	Px = 0.09850823
-	 Iy = (-0.99018658, -0.13923781, -0.01197365)   	Py = 1.83873414
-	 Iz = ( 0.00022135, -0.08724051,  0.99618725)   	Pz = 1.93591211
+	 Ix = (-0.13975151,  0.99018660,  0.00011519)   	Px = 0.09850824
+	 Iy = (-0.99018658, -0.13975153,  0.00020736)   	Py = 1.83873409
+	 Iz = ( 0.00022142, -0.00008508,  0.99999997)   	Pz = 1.93591207
 
 Moments of inertia: ( pounds * square feet )
 Taken at the center of mass and aligned with the output coordinate system. (Using positive tensor notation.)
-	Lxx = 1.80474669	Lxy = -0.23989192	Lxz = -0.02103754
-	Lyx = -0.23989192	Lyy = 0.14623059	Lyz = 0.15678360
-	Lzx = -0.02103754	Lzy = 0.15678360	Lzz = 1.92217721
+	Lxx = 1.80474664	Lxy = -0.24081258	Lxz = -0.00004953
+	Lyx = -0.24081258	Lyy = 0.13249572	Lyz = 0.00020675
+	Lzx = -0.00004953	Lzy = 0.00020675	Lzz = 1.93591205
 
 Moments of inertia: ( pounds * square feet )
 Taken at the output coordinate system. (Using positive tensor notation.)
-	Ixx = 52.23905470	Ixy = 20.08423400	Ixz = -4.66135384
-	Iyx = 20.08423400	Iyy = 11.26221777	Iyz = -10.78764717
-	Izx = -4.66135384	Izy = -10.78764717	Izz = 58.47490244
+	Ixx = 52.83130371	Ixy = 20.10272639	Ixz = -5.08400378
+	Iyx = 20.10272639	Iyy = 11.74911597	Iyz = -12.00202052
+	Izx = -5.08400378	Izy = -12.00202052	Izz = 58.58025362

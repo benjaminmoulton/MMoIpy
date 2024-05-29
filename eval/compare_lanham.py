@@ -24,7 +24,7 @@ if __name__ == "__main__":
         },
         "semispan" : 4.0,
         "sweep" : 10.0,
-        "dihedral" : -5.0,
+        "dihedral" : 0.0, # -5.0,
         "chord" : [ [0.0, 1.0],
                     [1.0, 0.5]],
         "thickness" : [ [0.0, 0.08],
@@ -221,6 +221,7 @@ if __name__ == "__main__":
     axs_cgs[2].plot(RT  ,cgs[0,2],"k-",label=uslbl)
     axs_cgs[2].plot(RT  ,cgs[1,2],"k--",label=lnlbl)
     axs_cgs[2].plot(RTSW,cgW  [2],"w.",mec="k",mew=0.5,label=SWlbl)
+    axs_cgs[2].plot(RTSW,RTSW*0. - 0.99,"k",alpha=0.0)
     axs_cgs[0].set_ylabel(r"$\bar{x}$ [ft]")
     axs_cgs[1].set_ylabel(r"$\bar{y}$ [ft]")
     axs_cgs[2].set_ylabel(r"$\bar{z}$ [ft]")

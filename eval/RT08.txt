@@ -10,23 +10,23 @@ Surface area = 7.39055477 square feet
 
 Center of mass: ( feet )
 	X = 1.50592964
-	Y = 4.91735712
-	Z = -0.83221959
+	Y = 4.92468402
+	Z = -0.99996673
 
 Principal axes of inertia and principal moments of inertia: ( pounds * square feet )
 Taken at the center of mass.
-	 Ix = (-0.17076644,  0.98155981,  0.08590204)   	Px = 0.13326286
-	 Iy = (-0.98531153, -0.17012348, -0.01480486)   	Py = 4.10014879
-	 Iz = ( 0.00008210, -0.08716844,  0.99619358)   	Pz = 4.23119820
+	 Ix = (-0.17076644,  0.98531154,  0.00002658)   	Px = 0.13326286
+	 Iy = (-0.98531153, -0.17076644,  0.00007872)   	Py = 4.10014878
+	 Iz = ( 0.00008210, -0.00001275,  1.00000000)   	Pz = 4.23119819
 
 Moments of inertia: ( pounds * square feet )
 Taken at the center of mass and aligned with the output coordinate system. (Using positive tensor notation.)
-	Lxx = 3.98446973	Lxy = -0.66491847	Lxz = -0.05820171
-	Lyx = -0.66491847	Lyy = 0.27920997	Lyz = 0.34585974
-	Lzx = -0.05820171	Lzy = 0.34585974	Lzz = 4.20093016
+	Lxx = 3.98446972	Lxy = -0.66746086	Lxz = -0.00002877
+	Lyx = -0.66746086	Lyy = 0.24894192	Lyz = 0.00010558
+	Lzx = -0.00002877	Lzy = 0.00010558	Lzz = 4.23119819
 
 Moments of inertia: ( pounds * square feet )
 Taken at the output coordinate system. (Using positive tensor notation.)
-	Ixx = 78.60344105	Ixy = 21.55066305	Ixz = -3.81799414
-	Iyx = 21.55066305	Iyy = 9.16045055	Iyz = -11.93110298
-	Izx = -3.81799414	Izy = -11.93110298	Izz = 83.54560540
+	Ixx = 79.74180814	Ixy = 21.58122207	Ixz = -4.51766737
+	Iyx = 21.58122207	Iyy = 10.05221455	Iyz = -14.77345489
+	Izx = -4.51766737	Izy = -14.77345489	Izz = 83.79220851
